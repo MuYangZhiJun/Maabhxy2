@@ -1,0 +1,62 @@
+{
+    "EnterGame": {
+        "action": "Custom",
+        "custom_action": "EnterGame"
+    },
+    "ChooseServer": {
+        "recognition": "OCR",
+        "expected": [
+            "进入"
+        ],
+        "action": "Click",
+        "post_delay": 500
+    },
+    "EnterServer": {
+        "recognition": "OCR",
+        "expected": [
+            "继续"
+        ],
+        "action": "Click",
+        "timeout": 20000,
+        "post_wait_freezes": {
+            "time": 2000,
+            "target": [
+                456,
+                682,
+                369,
+                31
+            ],
+            "threshold": 0.98
+        }
+    },
+    "DailyCheck-in": {
+        "is_sub": false,
+        "recognition": "OCR",
+        "expected": [
+            "领取"
+        ],
+        "index": 1,
+        "action": "Click",
+        "post_wait_freezes": {
+            "time": 2000,
+            "target": [
+                456,
+                682,
+                369,
+                31
+            ],
+            "threshold": 0.98
+        }
+    },
+    "SkipAnnouncement": {
+        "is_sub": false,
+        "recognition": "OCR",
+        "expected": [
+            "今日不再提醒",
+            "X"
+        ],
+        "timeout": 2000,
+        "action": "Click",
+        "post_delay": 500
+    }
+}

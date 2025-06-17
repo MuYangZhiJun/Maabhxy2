@@ -1,0 +1,102 @@
+{
+    "StartEvent": {
+        "action": "Custom",
+        "custom_action": "StartEvent"
+    },
+    "FindEvent_inverse": {
+        "recognition": "OCR",
+        "expected": [
+            "海湾障碍赛"
+        ],
+        "inverse": true,
+        "timeout": 1000
+    },
+    "EnterEvent": {
+        "recognition": "OCR",
+        "expected": [
+            "海湾障碍赛"
+        ],
+        "action": "Click",
+        "post_delay": 200
+    },
+    "FindBONUS_inverse": {
+        "recognition": "OCR",
+        "expected": [
+            "BONUS"
+        ],
+        "inverse": true,
+        "timeout": 1000
+    },
+    "ChooseBONUS": {
+        "recognition": "OCR",
+        "expected": [
+            "BONUS"
+        ],
+        "action": "Click",
+        "target_offset": [
+            0,
+            50,
+            0,
+            0
+        ],
+        "post_delay": 200
+    },
+    "UsingDouble": {
+        "recognition": "TemplateMatch",
+        "roi": [
+            600,
+            500,
+            600,
+            100
+        ],
+        "template": "Click.png",
+        "threshold": 0.45,
+        "action": "Click"
+    },
+    "FightAgain": {
+        "recognition": "OCR",
+        "expected": [
+            "再次挑战"
+        ],
+        "action": "Click",
+        "post_delay": 500
+    },
+    "Fighting": {
+        "is_sub": false,
+        "recognition": "OCR",
+        "expected": [
+            "HP"
+        ],
+        "action": "Custom",
+        "custom_action": "FightStart",
+        "post_wait_freezes": {
+            "time": 1000,
+            "target": [
+                456,
+                682,
+                369,
+                31
+            ],
+            "threshold": 0.98
+        }
+    },
+    "FightFinish": {
+        "recognition": "OCR",
+        "expected": [
+            "HP"
+        ],
+        "inverse": true,
+        "action": "Custom",
+        "custom_action": "FightEnd",
+        "post_wait_freezes": {
+            "time": 1000,
+            "target": [
+                456,
+                682,
+                369,
+                31
+            ],
+            "threshold": 0.98
+        }
+    }
+}

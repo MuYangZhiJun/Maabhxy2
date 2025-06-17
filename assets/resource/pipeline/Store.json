@@ -1,0 +1,76 @@
+{
+    "StartStore": {
+        "action": "Custom",
+        "custom_action": "StartStore"
+    },
+    "GotoStore": {
+        "recognition": "OCR",
+        "expected": [
+            "商店"
+        ],
+        "action": "Click",
+        "post_wait_freezes": {
+            "time": 1000,
+            "target": [
+                456,
+                682,
+                369,
+                31
+            ],
+            "threshold": 0.98
+        }
+    },
+    "EnterPackShop": {
+        "recognition": "OCR",
+        "expected": [
+            "礼包商店"
+        ],
+        "action": "Click",
+        "post_wait_freezes": {
+            "time": 1000,
+            "target": [
+                456,
+                682,
+                369,
+                31
+            ],
+            "threshold": 0.98
+        }
+    },
+    "ChooseHoumeiPack": {
+        "recognition": "OCR",
+        "expected": [
+            "吼美礼包"
+        ],
+        "action": "Click",
+        "post_wait_freezes": {
+            "time": 1000,
+            "target": [
+                456,
+                682,
+                369,
+                31
+            ],
+            "threshold": 0.98
+        }
+    },
+    "FindGift_inverse": {
+        "recognition": "TemplateMatch",
+        "template": "零时之种.png",
+        "inverse": true,
+        "timeout": 1000
+    },
+    "ChooseGift": {
+        "is_sub": false,
+        "recognition": "TemplateMatch",
+        "template": "零时之种.png",
+        "action": "Click",
+        "post_delay": 500
+    },
+    "BuyGift": {
+        "recognition": "TemplateMatch",
+        "template": "Buy.png",
+        "action": "Click",
+        "post_delay": 500
+    }
+}

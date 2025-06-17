@@ -1,0 +1,90 @@
+{
+    "StartTask": {
+        "action": "Custom",
+        "custom_action": "StartTask"
+    },
+    "GotoHome": {
+        "recognition": "OCR",
+        "expected": [
+            "首页"
+        ],
+        "action": "Click",
+        "post_delay": 500
+    },
+    "EnterTask": {
+        "recognition": "TemplateMatch",
+        "template": "Task.png",
+        "action": "Click",
+        "post_delay": 500
+    },
+    "GotoServantTravel": {
+        "recognition": "OCR",
+        "expected": [
+            "使魔"
+        ],
+        "action": "Click",
+        "post_delay": 500
+    },
+    "ReceiveTravelReward": {
+        "is_sub": false,
+        "recognition": "OCR",
+        "expected": [
+            "点击领取奖励"
+        ],
+        "timeout": 1000,
+        "action": "Click",
+        "post_delay": 500,
+        "post_wait_freezes": 1000
+    },
+    "ChooseServant": {
+        "is_sub": false,
+        "recognition": "OCR",
+        "expected": [
+            "点击选择使魔"
+        ],
+        "timeout": 1000,
+        "action": "Click",
+        "post_delay": 500
+    },
+    "QuickChoose": {
+        "recognition": "OCR",
+        "expected": [
+            "一键派遣"
+        ],
+        "action": "Click",
+        "post_delay": 500
+    },
+    "StartTravel": {
+        "recognition": "OCR",
+        "expected": [
+            "出发"
+        ],
+        "action": "Click",
+        "post_delay": 500
+    },
+    "GotoWeeklyTask": {
+        "recognition": "OCR",
+        "expected": [
+            "每周任务"
+        ],
+        "action": "Click",
+        "post_delay": 500
+    },
+    "GotoDailyTask": {
+        "recognition": "OCR",
+        "expected": [
+            "存在感"
+        ],
+        "action": "Click",
+        "post_delay": 500
+    },
+    "QuickRecive": {
+        "is_sub": false,
+        "recognition": "TemplateMatch",
+        "template": "QuickRecive.png",
+        "threshold": 0.98,
+        "timeout": 1000,
+        "action": "Click",
+        "post_delay": 1000
+    }
+}

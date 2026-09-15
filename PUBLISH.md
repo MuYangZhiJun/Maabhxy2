@@ -39,38 +39,39 @@ git push -u origin main
 
 ## 每次发版
 
-> **推送用脚本，别手敲 `git push`** —— 这台机器到 GitHub 的连接时通时断，
-> 实测推一次要重试 6 次才成功，而 `git push` 自己不会重试。
-> ```sh
-> python tools/push.py -m "chore: release v0.1.1"     # 提交 + 重试推送 + 校验
-> ```
-> Windows 上直接双击根目录的 **「推送更新.bat」** 也一样。
-> 脚本会确保 `http.version=HTTP/1.1`（HTTP/2 在国内容易被重置）、最多重试 10 次、
-> 最后比对远端和本地提交哈希是否一致。
+> **现在发版是全自动的**：打个 `v*` 的 tag 推上来，GitHub Actions 会自己打包、自检、
+> 建好 Release 并挂上两个 zip（见 `.github/workflows/release.yml`）。
+> 手动打包只是为了本地先看一眼。
 
 1. **把 `assets/interface.json` 的 `version` 往上加**（比如 `0.1.0` → `0.1.1`）。
-   MFAAvalonia 靠这个字段判断"有没有新版本"，不加别人就收不到更新。
-2. 跑一遍检查：
+   ⚠️ 这一步不能省：MFAAvalonia 的「更新资源」是**读这个字段**判断有没有新版本的，
+   不改的话别人点更新会以为"已经是最新"。流水线会核对 tag 和 version 是否一致，不一致会报警告。
+2. （可选）本地先看一眼包干不干净：
    ```sh
-   python tools/validate_schema.py     # schema 校验
-   python tools/check_env.py           # pipeline 引用 / 缺图
-   python tools/get_gui.py --sync-only # 同步进 gui/（本地自测用）
+   python tools/package.py --with-tools   # 出 dist/ 两个 zip
+   python tools/check_package.py          # 检查没混进隐私/调试文件、必需内容齐全
+   python tools/check_version.py v0.1.1   # 核对 tag 和 version
    ```
-3. 打包（可选，给不想用更新功能、想直接下 zip 的人）：
+3. **提交 + 推送**（网络抽风的话它自己重试）：
    ```sh
-   python tools/package.py --with-tools
+   python tools/push.py -m "chore: release v0.1.1"
    ```
-   会在 `dist/` 出两个包：
-   - `bh2-maa-<版本>.zip` —— **资源包**，MAA 生态通用布局：
-     `interface.json` + `resource/`（pipeline + 模板图）+ `agent/`
-   - `bh2-maa-<版本>-source.zip` —— 完整源码，含 `tools/`，能自己构建 GUI
-4. 提交 + 打 tag + 发 Release：
+   或者双击「推送更新.bat」。
+4. **打 tag 并推上去**（这一步会触发发布流水线）：
    ```sh
-   git add -A && git commit -m "chore: release v0.1.1"
-   git tag v0.1.1 && git push && git push --tags
+   git tag v0.1.1
+   git push origin v0.1.1
    ```
-   然后在 GitHub 上建 Release，把 `dist/` 里那两个 zip 传上去（可选）。
-   **注意：只要仓库本身更新了，用「更新资源」的人就能拿到，Release 只是给想手动下载的人。**
+5. 等一两分钟，Release 就自动出现在
+   `https://github.com/<你的用户名>/<仓库>/releases` —— 两个 zip 已经挂好了。
+
+**Release 说明**（正文）用的是 `.github/RELEASE_NOTES.md`，想改说明就改那个文件。
+
+> ⚠️ Python 的 `maafw` 版本、以及 `.github/workflows/` 里那两个流水线：
+> `check.yml` 在每次改动 assets/agent/tools 时跑项目自己的自检（schema、引用、缺图、
+> 打包内容），`release.yml` 管发布。模板原来带的 `install.yml` / `mirrorchyan_*.yml` /
+> `sync_schema_files.yml` 已经删掉了 —— 那几个是 MaaXYZ 模板和官方镜像服务用的，
+> 在这个项目里每次推送都失败，纯噪音。
 
 ---
 

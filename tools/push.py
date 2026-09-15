@@ -48,6 +48,8 @@ def main():
     ap.add_argument("--retries", type=int, default=10, help="推送最多试几次（默认 10）")
     ap.add_argument("--interval", type=int, default=20, help="每次重试间隔秒数")
     ap.add_argument("--dry-run", action="store_true", help="只看状态，不提交不推送")
+    ap.add_argument("--force", action="store_true",
+                    help="强推（只在改写过历史之后用，比如清理了不该提交的文件）")
     args = ap.parse_args()
 
     # 1) 连接相关的稳妥配置（幂等，重复跑没事）
@@ -87,9 +89,13 @@ def main():
 
     # 4) 推送（重试）
     ok = False
+    push_args = ["push", "origin", "main"]
+    if args.force:
+        push_args.insert(1, "--force")
+        print("⚠️ 使用 --force（覆盖远端历史）")
     for i in range(1, args.retries + 1):
         print("推送第 %d/%d 次……" % (i, args.retries))
-        rc, out = run(["push", "origin", "main"], timeout=300)
+        rc, out = run(push_args, timeout=300)
         if rc == 0 or "main -> main" in out or "up to date" in out:
             print("   ✅ 推送成功")
             ok = True

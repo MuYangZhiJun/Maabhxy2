@@ -572,6 +572,24 @@ case「每周任务」  → 日常_存在感.next = [每周任务_切页, 收尾
     跑 `领取奖励` 时 `日常_存在感_关窗` 命中 `Rect(552,179,214,33)` ✅，
     证实两种弹窗都真实存在，拆成两个节点分别处理是对的（别合并）。
 
+46. **给 Windows 写的 `.bat` 必须用 GBK 编码，外加三个 cmd 坑** ——
+    - **编码**：cmd.exe 按系统 OEM 代码页（中文 Windows = GBK）读 `.bat`，
+      用 UTF-8 存的中文会被解析成乱码，实测报 `& was unexpected at this time`，
+      脚本根本跑不起来。所以 `启动小助手.bat` / `推送更新.bat` 都是 **GBK + CRLF**。
+    - **带空格的路径**：`set ADB="E:\MuMu Player 12\nx_main\adb.exe"` 会把引号一起存进变量，
+      再拿去 `for /f` 里用会被拆断（报 `'E:\MuMu' is not recognized`）。
+      正确写法 `set "ADB=值"`，用的时候才加引号 `"%ADB%"`。
+    - **等待**：别用 `timeout /t` —— 没有控制台时（输出被重定向）它会报
+      `Input redirection is not supported` 然后卡住；用 `ping -n 6 127.0.0.1 >nul` 代替。
+
+47. **发布前务必扫一遍"有没有把隐私提交进去"** —— 这次真栽了：
+    `assets/resource/image/通用/主界面.png.bak_personal`（含玩家头像/昵称/等级的旧模板）
+    被 `git add -A` 带进仓库、**并且推到了公开仓库**。
+    处理：`filter-branch` 从全部历史里清掉 → 删 `refs/original/*` →
+    `reflog expire --expire=now --all` → `gc --prune=now` → 强推；
+    并把 `*.bak_personal` / `*.bak_*` 补进 `.gitignore`。
+    **教训：加 gitignore 要连"备份文件"一起挡，别只挡目录**（当时只挡了 `dist/` 和 `_backup_*.json`）。
+
 42. **发布给别人用时，模板图里的隐私要清一遍** ——
     踩过：`通用/主界面.png` 裁的是玩家信息板（**含用户头像**），
     既导致别人认不到（不通用），也等于把隐私打包进资源。

@@ -300,11 +300,26 @@ def main():
         detail = tasker.post_task(entry).wait().get()
         status = getattr(detail, "status", None)
         print("执行结果:", status, "succeeded =", getattr(status, "succeeded", "?"))
+        # 节点结果同时落一份 UTF-8 文件：控制台/重定向经常把中文节点名吃掉
+        # （PowerShell 的 > 还会写成 UTF-16，看日志得猜），落盘最省事。
+        node_log = os.path.join(ROOT, "debug", "run_nodes.log")
+        rows = []
         for node in (getattr(detail, "nodes", None) or []):
             reco = getattr(node, "recognition", None)
             box = getattr(reco, "box", None) if reco is not None else None
-            print("   %-34s %s" % (getattr(node, "name", "?"),
-                                   ("命中 " + str(box)) if box is not None else "未命中"))
+            line = "   %-34s %s" % (getattr(node, "name", "?"),
+                                    ("命中 " + str(box)) if box is not None else "未命中")
+            print(line)
+            rows.append(line)
+        try:
+            os.makedirs(os.path.dirname(node_log), exist_ok=True)
+            with open(node_log, "w", encoding="utf-8") as f:
+                f.write("入口: %s\n" % entry)
+                f.write("结果: succeeded=%s\n" % getattr(status, "succeeded", "?"))
+                f.write("\n".join(r.rstrip() for r in rows) + "\n")
+            print("节点日志 -> %s" % node_log)
+        except Exception as exc:  # noqa: BLE001
+            print("[!!] 节点日志写不了: %s" % exc)
         return 0
     finally:
         if agent_proc is not None:

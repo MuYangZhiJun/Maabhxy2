@@ -2397,5 +2397,291 @@
             "日常_吼姆_关窗",
             "日常_吼姆_收尾"
         ]
+    },
+    "日常_使魔探险_入口": {
+        "enabled": true,
+        "action": "DoNothing",
+        "next": [
+            "日常_使魔探险_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_使魔探险_退一步": {
+        "enabled": true,
+        "recognition": "TemplateMatch",
+        "template": "通用/返回箭头.png",
+        "roi": [
+            0,
+            0,
+            240,
+            200
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "max_hit": 10,
+        "post_delay": 900,
+        "next": [
+            "日常_使魔探险_入口",
+            "日常_使魔探险_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_领取邮件_入口": {
+        "enabled": true,
+        "action": "DoNothing",
+        "next": [
+            "日常_领取邮件_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_领取邮件_退一步": {
+        "enabled": true,
+        "recognition": "TemplateMatch",
+        "template": "通用/返回箭头.png",
+        "roi": [
+            0,
+            0,
+            240,
+            200
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "max_hit": 10,
+        "post_delay": 900,
+        "next": [
+            "日常_领取邮件_入口",
+            "日常_领取邮件_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_商店购物_入口": {
+        "enabled": true,
+        "action": "DoNothing",
+        "next": [
+            "日常_商店购物_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_商店购物_退一步": {
+        "enabled": true,
+        "recognition": "TemplateMatch",
+        "template": "通用/返回箭头.png",
+        "roi": [
+            0,
+            0,
+            240,
+            200
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "max_hit": 10,
+        "post_delay": 900,
+        "next": [
+            "日常_商店购物_入口",
+            "日常_商店购物_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_领取奖励_入口": {
+        "enabled": true,
+        "action": "DoNothing",
+        "next": [
+            "日常_领取奖励_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_领取奖励_退一步": {
+        "enabled": true,
+        "recognition": "TemplateMatch",
+        "template": "通用/返回箭头.png",
+        "roi": [
+            0,
+            0,
+            240,
+            200
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "max_hit": 10,
+        "post_delay": 900,
+        "next": [
+            "日常_领取奖励_入口",
+            "日常_领取奖励_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_重复刷关_入口": {
+        "enabled": true,
+        "action": "DoNothing",
+        "next": [
+            "日常_重复刷关_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_重复刷关_退一步": {
+        "enabled": true,
+        "recognition": "TemplateMatch",
+        "template": "通用/返回箭头.png",
+        "roi": [
+            0,
+            0,
+            240,
+            200
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "max_hit": 10,
+        "post_delay": 900,
+        "next": [
+            "日常_重复刷关_入口",
+            "日常_重复刷关_回首页",
+            "日常_收尾"
+        ]
+    },
+    "关卡战斗_就绪": {
+        "recognition": "TemplateMatch",
+        "template": "通用/主界面.png",
+        "roi": [
+            0,
+            100,
+            240,
+            500
+        ],
+        "threshold": 0.75,
+        "action": "DoNothing",
+        "enabled": true,
+        "next": [
+            "日常_开始"
+        ]
+    },
+    "关卡战斗_入口": {
+        "enabled": true,
+        "action": "DoNothing",
+        "next": [
+            "关卡战斗_回首页",
+            "日常_收尾"
+        ]
+    },
+    "关卡战斗_退一步": {
+        "enabled": true,
+        "recognition": "TemplateMatch",
+        "template": "通用/返回箭头.png",
+        "roi": [
+            0,
+            0,
+            240,
+            200
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "max_hit": 10,
+        "post_delay": 900,
+        "next": [
+            "关卡战斗_入口",
+            "关卡战斗_回首页",
+            "日常_收尾"
+        ]
+    },
+    "日常_使魔探险_回首页": {
+        "enabled": true,
+        "action": "Click",
+        "target": [
+            620,
+            25,
+            72,
+            70
+        ],
+        "max_hit": 3,
+        "post_delay": 2000,
+        "next": [
+            "日常_使魔探险_开面板",
+            "日常_使魔探险_退一步",
+            "日常_收尾"
+        ]
+    },
+    "日常_领取邮件_回首页": {
+        "enabled": true,
+        "action": "Click",
+        "target": [
+            620,
+            25,
+            72,
+            70
+        ],
+        "max_hit": 3,
+        "post_delay": 2000,
+        "next": [
+            "日常_邮件",
+            "日常_领取邮件_退一步",
+            "日常_收尾"
+        ]
+    },
+    "日常_商店购物_回首页": {
+        "enabled": true,
+        "action": "Click",
+        "target": [
+            620,
+            25,
+            72,
+            70
+        ],
+        "max_hit": 3,
+        "post_delay": 2000,
+        "next": [
+            "日常_商店",
+            "日常_商店购物_退一步",
+            "日常_收尾"
+        ]
+    },
+    "日常_领取奖励_回首页": {
+        "enabled": true,
+        "action": "Click",
+        "target": [
+            620,
+            25,
+            72,
+            70
+        ],
+        "max_hit": 3,
+        "post_delay": 2000,
+        "next": [
+            "日常_存在感",
+            "日常_领取奖励_退一步",
+            "日常_收尾"
+        ]
+    },
+    "日常_重复刷关_回首页": {
+        "enabled": true,
+        "action": "Click",
+        "target": [
+            620,
+            25,
+            72,
+            70
+        ],
+        "max_hit": 3,
+        "post_delay": 2000,
+        "next": [
+            "日常_活动BONUS",
+            "日常_重复刷关_退一步",
+            "日常_收尾"
+        ]
+    },
+    "关卡战斗_回首页": {
+        "enabled": true,
+        "action": "Click",
+        "target": [
+            620,
+            25,
+            72,
+            70
+        ],
+        "max_hit": 3,
+        "post_delay": 2000,
+        "next": [
+            "关卡战斗_就绪",
+            "关卡战斗_退一步",
+            "日常_收尾"
+        ]
     }
 }

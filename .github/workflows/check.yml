@@ -1,19 +1,27 @@
 name: check
 
+# 每次改动 assets / agent / tools / py 就自动跑一套自检。
+# 这套工具是项目自己的（不是模板那个 npm + maa-tools），检查的都是实测踩过的坑：
+#   validate_schema  —— 官方 JSON Schema（节点字段写错、引用不存在的节点）
+#   check_env        —— 节点引用、缺图、未登记模板
+#   check_fallback   —— next 里有没有必然命中的兜底（坑 4/33）
+#   check_option_conflict —— 选项互相覆盖（坑 34/35）
+#   check_package    —— 打出来的包别混进隐私/调试文件（坑 47）
 on:
   push:
     branches:
       - "**"
     paths:
-      - ".github/workflows/check.yml"
       - "assets/**"
+      - "agent/**"
+      - "tools/**"
       - "**.py"
-  pull_request:
-    branches:
-      - "**"
-    paths:
       - ".github/workflows/check.yml"
+  pull_request:
+    paths:
       - "assets/**"
+      - "agent/**"
+      - "tools/**"
       - "**.py"
   workflow_dispatch:
 
@@ -21,26 +29,32 @@ jobs:
   resource:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: 取代码
+        uses: actions/checkout@v4
+
+      - name: 装 Python
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 0
+          python-version: "3.11"
 
-      - name: Use Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Run maa-checker
-        run: |
-          npm ci
-          npx @nekosu/maa-tools check
-
-      - name: Install maafw
+      - name: 装校验依赖
         run: |
           python -m pip install --upgrade pip
-          python -m pip install --upgrade maafw --pre
-
-      - name: Validate JSON Schema
-        run: |
           python -m pip install jsonschema==4.26.0 referencing==0.37.0
-          python tools/validate_schema.py --schema-dir deps/tools --resource-dirs assets/resource --exclude-dirs assets/resource/announcement --interface-files assets/interface.json
+
+      - name: JSON Schema 校验（必须过）
+        run: python tools/validate_schema.py
+
+      - name: 引用与缺图检查（必须过）
+        run: python tools/check_env.py
+
+      - name: next 兜底检查（只报告，不判失败）
+        run: python tools/check_fallback.py || true
+
+      - name: 选项覆盖冲突检查（只报告）
+        run: python tools/check_option_conflict.py || true
+
+      - name: 打包 + 包内容检查（别混进隐私/调试文件）
+        run: |
+          python tools/package.py --with-tools
+          python tools/check_package.py

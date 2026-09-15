@@ -1,0 +1,50 @@
+name: release
+
+# 打一个 v* 的 tag 推上来，就自动：
+#   1. 用 tools/package.py 打包（资源包 + 源码包）
+#   2. 用 tools/check_package.py 检查包里没混进隐私/调试文件
+#   3. 用 runner 自带的 gh CLI 建 Release、挂上两个 zip
+# 也可以到 Actions 页面手动触发（workflow_dispatch）。
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "要发布的 tag（手动触发时填，例如 v0.1.0）"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+    steps:
+      - name: 取代码
+        uses: actions/checkout@v4
+
+      - name: 装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 打包
+        run: python tools/package.py --with-tools
+
+      - name: 检查包里干不干净（隐私/调试文件、必需内容）
+        run: python tools/check_package.py
+
+      - name: 核对 tag 和 interface.json 的 version
+        run: python tools/check_version.py "$TAG"
+
+      - name: 建 Release 并上传
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$TAG" dist/*.zip \
+            --title "崩坏学园2 小助手 $TAG" \
+            --notes-file .github/RELEASE_NOTES.md

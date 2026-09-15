@@ -1,0 +1,20 @@
+{
+    "自动战斗": {
+        "next": ["自动战斗_执行"]
+    },
+    "自动战斗_执行": {
+        "action": "Custom",
+        "custom_action": "auto_battle",
+        "custom_action_param": {
+            "duration": 60
+        }
+    },
+    "自动战斗_打到结束": {
+        "action": "Custom",
+        "custom_action": "auto_battle",
+        "custom_action_param": {
+            "duration": 60
+        },
+        "next": ["回到主界面", "回到主界面_退一步"]
+    }
+}

@@ -1,0 +1,139 @@
+{
+    "刷关_开始": {
+        "next": [
+            "刷关_确保首页",
+            "刷关_退一步"
+        ]
+    },
+    "刷关_确保首页": {
+        "recognition": "TemplateMatch",
+        "template": "通用/主界面.png",
+        "roi": [
+            0,
+            100,
+            240,
+            500
+        ],
+        "threshold": 0.75,
+        "action": "DoNothing",
+        "next": [
+            "刷关_进入关卡"
+        ]
+    },
+    "刷关_退一步": {
+        "recognition": "TemplateMatch",
+        "template": "通用/返回箭头.png",
+        "roi": [
+            0,
+            0,
+            240,
+            200
+        ],
+        "threshold": 0.8,
+        "action": "Click",
+        "next": [
+            "刷关_确保首页",
+            "刷关_退一步"
+        ],
+        "max_hit": 15,
+        "post_delay": 700
+    },
+    "刷关_进入关卡": {
+        "recognition": "TemplateMatch",
+        "template": "刷关/关卡图标.png",
+        "roi": [
+            0,
+            120,
+            1280,
+            500
+        ],
+        "threshold": 0.8,
+        "action": "Click",
+        "max_hit": 3,
+        "post_delay": 1800,
+        "next": [
+            "刷关_点开战"
+        ]
+    },
+    "刷关_点开战": {
+        "recognition": "TemplateMatch",
+        "template": "刷关/开战.png",
+        "roi": [
+            400,
+            440,
+            600,
+            280
+        ],
+        "threshold": 0.8,
+        "action": "Click",
+        "max_hit": 6,
+        "post_delay": 2000,
+        "next": [
+            "刷关_点开战",
+            "刷关_战斗一次"
+        ]
+    },
+    "刷关_战斗一次": {
+        "action": "Custom",
+        "custom_action": "auto_battle",
+        "custom_action_param": {
+            "duration": 60
+        },
+        "max_hit": 5,
+        "next": [
+            "刷关_等结算"
+        ]
+    },
+    "刷关_等结算": {
+        "action": "DoNothing",
+        "max_hit": 30,
+        "post_delay": 2000,
+        "next": [
+            "刷关_结算",
+            "刷关_等结算"
+        ]
+    },
+    "刷关_结算": {
+        "recognition": "TemplateMatch",
+        "template": "刷关/再次挑战.png",
+        "roi": [
+            300,
+            340,
+            680,
+            380
+        ],
+        "threshold": 0.8,
+        "action": "Click",
+        "max_hit": 40,
+        "post_delay": 2500,
+        "next": [
+            "刷关_双倍卷",
+            "刷关_战斗一次",
+            "刷关_收尾"
+        ]
+    },
+    "刷关_双倍卷": {
+        "enabled": false,
+        "recognition": "TemplateMatch",
+        "template": "刷关/双倍卷.png",
+        "roi": [
+            300,
+            300,
+            680,
+            420
+        ],
+        "threshold": 0.8,
+        "action": "Click",
+        "max_hit": 40,
+        "post_delay": 2000,
+        "next": [
+            "刷关_战斗一次"
+        ]
+    },
+    "刷关_收尾": {
+        "next": [
+            "回到主界面",
+            "回到主界面_退一步"
+        ]
+    }
+}

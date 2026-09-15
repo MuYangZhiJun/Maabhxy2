@@ -1,0 +1,41 @@
+{
+    "duration": 60,
+
+    "attack_button": [1150, 600],
+    "attack_jitter": 14,
+    "click_interval": 0.28,
+
+    "joystick_center": [200, 590],
+    "walk_left_offset": -260,
+    "walk_right_offset": 260,
+    "walk_duration_ms": 380,
+    "walk_hold_ms": 700,
+    "swipe_every": 4,
+
+    "pause_every": 12,
+    "pause_seconds": [0.4, 1.1],
+
+    "fail_limit": 5,
+
+    "//bonus_battle": "活动 BONUS 专用。rounds=刷几轮，auto_fight=拖动输出还是挂机，use_crystal=体力不足时花水晶补。坐标都是一号位武器 / 结算页再次挑战 / 好友列表第一格 / 助战页开战 / 结算页确定。注意：实测 BONUS 关是**自动战斗**的（放手不管 11 秒自己打完，S 级），所以 auto_fight 和 weapon_button 对 BONUS 基本没用武之地 —— agent 每 3 秒认一次「战斗结算」，十几秒就认到收工了。",
+    "bonus_battle": {
+        "duration": 150,
+        "rounds": 1,
+        "auto_fight": true,
+        "use_crystal": false,
+        "crystal_cancel_offset": [109, 199],
+
+        "weapon_button": [997, 635],
+        "joystick_center": [200, 590],
+        "move_right_offset": 300,
+        "click_interval": 0.16,
+        "weapon_jitter": 10,
+        "check_every": 3.0,
+
+        "rechallenge_button": [638, 613],
+        "support_slot": [462, 264],
+        "start_button": [879, 659],
+        "settle_confirm": [797, 611],
+        "//offset": "crystal_cancel_offset 是「补充体力」窗里「取消」的偏移（购买是 crystal_offset）。这两个按钮在 agent 里各算各的，实测「补充体力」标题命中 (574,229)、购买中心 (533,456)、取消中心 (749,456)。"
+    }
+}

@@ -610,16 +610,72 @@ case「每周任务」  → 日常_存在感.next = [每周任务_切页, 收尾
 
 ---
 
-## 七、关键文件
+## 七、GitHub 发布与推送（2026-09-16 起）
+
+| 项 | 值 |
+| --- | --- |
+| 仓库 | **https://github.com/MuYangZhiJun/Maabhxy2**（已公开，主分支 `main`） |
+| 更新源 | `assets/interface.json` 的 `github` 字段 —— MFAAvalonia 的「更新资源」读这个 |
+| 怎么推送 | **双击根目录「推送更新.bat」**，或 `python tools/push.py -m "提交信息"` |
+
+**为什么单独包了个推送脚本**：这台机器到 GitHub 的连接**时通时断**，
+实测推一次重试了 6 次才成功（`Connection was reset` / `Failed to connect ... port 443`）。
+`tools/push.py` 会：确保 `http.version=HTTP/1.1`（HTTP/2 在国内容易被重置）→ 暂存并提交
+→ 最多重试 10 次（间隔 20 秒）→ 最后比对远端和本地的提交哈希是否一致。
+
+**认证**：GitHub 早就禁用了"账号密码推送"，必须 token 或 OAuth。这台机器的凭据管理器（GCM）
+走的是 **OAuth** —— 第一次推送会弹浏览器授权一次，之后不用管。
+凭据里还留着一条旧的 `GitHub - https://api.github.com/MuYangZhiJun`
+（`cmdkey` 删不掉带空格的 target，要在「凭据管理器」图形界面里删）—— 不影响 git 推送。
+
+**历史**：远端是**单一干净提交**（`524a66d` 起）。当初本地是浅克隆（缺上游对象，
+推上去报 `did not receive expected object`），所以把历史重做成一个提交；
+旧的 main 用 tag `backup-before-clean` 留了保底；远端另有个早前的 `test` tag。
+
+**发版流程**见 `PUBLISH.md`（发版前记得把 `assets/interface.json` 的 `version` 往上加，
+MFAAvalonia 靠它判断有没有新版本）。
+
+---
+
+## 八、2026-09-16 这次会话干了什么（给下一轮快速接手）
+
+按顺序：
+
+1. **校准环境**：adb 会挂（`kill-server`→`start-server`→`connect`）；确认模拟器 1280x720。
+2. **打通 GUI**：MFAAvalonia 之前"用不了"的旧结论是错的（那是资源修好之前的日志）。
+   真正的坑是 **Python 的 `maafw` 4.3.2 与 GUI 自带 MaaFramework 5.13.0 版本不一致**，
+   agent 连不上、界面卡「正在启动 Agent」。装了 `maafw==5.13.0` 后通了；
+   `agent/main.py` 现在会检查 `start_up()` 返回值，连不上直接报错退出（不再空等）。
+3. **修 BONUS 链 + 补工具**：`tools/crop.py`（裁图带网格）、`tools/burst.py`（连拍翻帧）、
+   `tools/dump_nodes.py`（看 override 最终生效值）、`tools/pick_template.py`、
+   `tools/template_health.py`、`tools/check_fallback.py`、`tools/check_option_conflict.py`。
+4. **修了用户报的 4 个问题**（详见「五之二」）：领取邮件缺兜底、存在感被选项覆盖、
+   BONUS 点歪、使魔的爱进不去。
+5. **补了「吼姆的礼物」**（入口 + 一键领取 + 接进「领取奖励」），并**发现关窗节点一直是坏的**：
+   领奖弹窗有两种形态，原来只处理了一种（详见坑 40）。
+6. **主界面判定换成侧边栏图标**（原来是玩家信息板，含隐私、且子页会误命中 → 任务失败）。
+7. **入口加「先点首页 + 回退重试」**（坑 43），六个任务的 entry 都改了。
+8. **发布**：仓库推上 GitHub、README 改成对外介绍页（含 AI 代工声明）、
+   `tools/package.py` 打包、`PUBLISH.md` 写发布流程、`tools/push.py` + 「推送更新.bat」带重试推送。
+
+**下一步可以做**（没做的都在「五、待办」里）：
+- 虚轴之庭详情页那两张模板（`出击`、`快捷战斗确定`）没实测过（需要用户把游戏停到那页抓图）
+- 「启动崩坏学园2」的**冷启动**没完整跑过
+- BONUS 多轮（`次数=2`）与「体力不足 → 免费双倍体力」那条链没在真机重跑
+- 「使魔优先派遣」还是空壳（缺 S/A/B/C 徽章模板；界面上使魔全在探险中时截不到）
+
+---
+
+## 九、关键文件
 
 | 文件 | 说明 |
 | --- | --- |
 | `assets/interface.json` | 任务与选项定义（**JSONC，带注释，不能用 json.loads 直接读**） |
-| `assets/resource/pipeline/30_清日常.json` | 主流程，约 110 个节点 |
+| `assets/resource/pipeline/30_清日常.json` | 主流程，**143 个节点** |
 | `assets/resource/pipeline/00_通用.json` | 通用节点（主界面判定、退一步等） |
 | `agent/my_bonus.py` | `bonus_battle`：刷 N 轮 + 边走边打 + 认结算 + 体力不足处理 |
 | `agent/battle_config.json` | 所有战斗坐标（`bonus_battle` 段带注释） |
-| `agent/main.py` | agent 入口，socket_id 解析（踩过坑的那个） |
+| `agent/main.py` | agent 入口，socket_id 解析 + `start_up` 返回值检查 |
 | `tools/run_task.py` | **命令行跑任务的替代方案**（GUI 用不了时靠它）；agent 的输出会落到 `debug/agent.log` |
 | `tools/crop.py` | 把截图裁一块放大看（带坐标网格），**标坐标用它，别眯眼看全屏预览图** |
 | `tools/burst.py` | 连拍模拟器画面（跑任务时后台开着，事后翻帧看是在哪一屏跑偏的） |
@@ -631,7 +687,7 @@ case「每周任务」  → 日常_存在感.next = [每周任务_切页, 收尾
 
 ---
 
-## 八、给下一轮的建议
+## 十、给下一轮的建议
 
 1. **先跑 `python tools/run_task.py`** 确认工具还能用，再看任务列表。
 2. **第一件该做的事**：确认体力 ≥ 50（BONUS 一轮 50），然后跑

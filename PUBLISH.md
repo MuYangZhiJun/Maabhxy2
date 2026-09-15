@@ -39,6 +39,15 @@ git push -u origin main
 
 ## 每次发版
 
+> **推送用脚本，别手敲 `git push`** —— 这台机器到 GitHub 的连接时通时断，
+> 实测推一次要重试 6 次才成功，而 `git push` 自己不会重试。
+> ```sh
+> python tools/push.py -m "chore: release v0.1.1"     # 提交 + 重试推送 + 校验
+> ```
+> Windows 上直接双击根目录的 **「推送更新.bat」** 也一样。
+> 脚本会确保 `http.version=HTTP/1.1`（HTTP/2 在国内容易被重置）、最多重试 10 次、
+> 最后比对远端和本地提交哈希是否一致。
+
 1. **把 `assets/interface.json` 的 `version` 往上加**（比如 `0.1.0` → `0.1.1`）。
    MFAAvalonia 靠这个字段判断"有没有新版本"，不加别人就收不到更新。
 2. 跑一遍检查：

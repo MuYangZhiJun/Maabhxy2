@@ -76,14 +76,23 @@ def main():
 
     # 3) 提交
     if files:
-        msg = args.message or ("chore: 自动提交 %s" % datetime.now().strftime("%Y-%m-%d %H:%M"))
+        if args.message:
+            msg = args.message
+        else:
+            # 没给信息就自动生成，但必须带上改了哪些文件 ——
+            # 只写「自动提交 + 时间」的话，事后翻 git log 一脸懵（踩过）。
+            head = files[:6]
+            more = " 等 %d 个文件" % len(files) if len(files) > len(head) else ""
+            msg = ("chore: 自动提交 %s\n\n改动: %s%s"
+                   % (datetime.now().strftime("%Y-%m-%d %H:%M"),
+                      "、".join(head), more))
         rc, out = run(["-c", "user.name=MuYangZhiJun",
                        "-c", "user.email=MuYangZhiJun@users.noreply.github.com",
                        "commit", "-q", "-m", msg])
         if rc != 0:
             print("[!!] 提交失败：%s" % short(out))
             return 1
-        print("已提交：%s" % msg)
+        print("已提交：%s" % msg.splitlines()[0])
     else:
         print("没有要提交的，直接推送")
 

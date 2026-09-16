@@ -36,9 +36,11 @@ _DEFAULTS = {
     "weapon_button": [997, 635],
     "joystick_center": [200, 590],
     "move_right_offset": 300,
-    "click_interval": 0.16,
+    "click_interval": 0.22,
     "weapon_jitter": 10,
-    "check_every": 3.0,
+    # ⚠️ 检查间隔别太密：一次 screencap 实测 ~350ms，加上模板匹配就 ~0.5 秒。
+    # 3 秒一轮的话，打完那一刻最多要等 3 秒才发现；1.5 秒更跟手（代价是每秒多截一次图）。
+    "check_every": 1.5,
     "rechallenge_button": [638, 613],
     "support_slot": [462, 264],
     "support_template": "日常/选择助战好友.png",
@@ -103,6 +105,16 @@ _DEFAULTS = {
     "act_card_roi": [130, 100, 1150, 620],
     "settle_template": "日常/战斗结算.png",
     "settle_roi": [400, 80, 600, 90],
+    # ⚠️ 结算页要多认几个标志（2026-09-16 踩：那次战斗结算页**画面卡住/只渲染了一半**，
+    #    `日常/战斗结算.png` 只打到 **0.8094**（正常 0.9928）→ 认不到 → 白白点满 150 秒，
+    #    外面看就是「战斗结束后卡住不动」）。但同一张卡住的画面上
+    #    `日常/再次挑战.png` 是 0.9030、`日常/结算确定.png` 是 0.9830 —— 都还在！
+    #    所以"这一把打完了"用**任一命中**来判断，别只押在一个模板上。
+    "settle_markers": [
+        ["日常/战斗结算.png", [400, 80, 600, 90], 0.78],
+        ["日常/再次挑战.png", [400, 540, 500, 140], 0.85],
+        ["日常/结算确定.png", [500, 480, 600, 240], 0.85]
+    ],
     "rechallenge_template": "日常/再次挑战.png",
     "rechallenge_roi": [400, 540, 500, 140],
     "double_template": "日常/兑换双倍体力.png",
@@ -162,7 +174,7 @@ class _Ctl:
             time.sleep(wait)
         return True
 
-    def find(self, template, roi):
+    def find(self, template, roi, threshold=None):
         """截一张图认模板，命中返回 box [x,y,w,h]，否则 None。"""
         try:
             image = self.controller.post_screencap().wait().get()
@@ -177,7 +189,7 @@ class _Ctl:
                 "recognition": "TemplateMatch",
                 "template": template,
                 "roi": roi,
-                "threshold": self.cfg["threshold"],
+                "threshold": self.cfg["threshold"] if threshold is None else float(threshold),
             }},
         )
         box = getattr(detail, "box", None) if detail is not None else None
@@ -219,6 +231,20 @@ class _Ctl:
         except Exception as exc:  # noqa: BLE001
             print(f"[bonus]   存截图失败（写盘）: {exc}")
             return None
+
+
+def _settled(ctl, cfg):
+    """这一把打完了吗？**任一结算标志命中**就算（别只认一个模板）。
+
+    为什么：实测碰到过结算页**画面卡住/只渲染一半**的情况，`战斗结算.png` 掉到 0.8094
+    （阈值 0.85 过不去），但同一屏上的「再次挑战」「结算确定」都还是好分数。
+    只认一个模板的话，就会在已经打完的结算页上白点 150 秒 —— 外面看是「战斗结束后卡住」。
+    """
+    for item in cfg["settle_markers"]:
+        name, roi, thr = item[0], item[1], float(item[2])
+        if ctl.find(name, roi, threshold=thr):
+            return True
+    return False
 
 
 def _fight(ctl, cfg, duration):
@@ -285,7 +311,7 @@ def _fight(ctl, cfg, duration):
             if time.monotonic() >= next_check:
                 next_check = time.monotonic() + check_every
 
-                if ctl.has(cfg["settle_template"], cfg["settle_roi"]):
+                if _settled(ctl, cfg):
                     print(f"[bonus]   认到战斗结算（点了 {clicks} 次）")
                     return True
 
@@ -297,7 +323,7 @@ def _fight(ctl, cfg, duration):
                     time.sleep(float(cfg["net_wait"]))
                     deadline += float(cfg["net_wait"])
                     # 等完再认一次结算：网络恢复后可能直接就到结算页了
-                    if ctl.has(cfg["settle_template"], cfg["settle_roi"]):
+                    if _settled(ctl, cfg):
                         print(f"[bonus]   网络恢复后认到战斗结算（点了 {clicks} 次）")
                         return True
                     continue
@@ -407,7 +433,7 @@ def _next_round(ctl, cfg, use_crystal):
             # 正确的判据是"**既不在详情页、也不在结算页**"→ 那只可能是好友列表。
             _wait_net(ctl, cfg, tries=3)
             on_detail = _on_bonus_detail(ctl, cfg)
-            on_settle = ctl.has(cfg["settle_template"], cfg["settle_roi"])
+            on_settle = _settled(ctl, cfg)
             backup = ctl.find(cfg["backup_template"], cfg["backup_roi"])
             if on_detail and not backup:
                 print("[bonus]   点了「再次挑战」但还停在详情页上，收工")

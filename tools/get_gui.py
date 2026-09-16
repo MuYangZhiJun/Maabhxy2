@@ -273,7 +273,10 @@ def main():
         if not os.path.isdir(GUI_DIR):
             log("[!!] gui/ 不存在，先跑一次不带 --sync-only 的")
             sys.exit(1)
-        sync_assets()
+        # ⚠️ 这里必须从 interface.json 读版本号！`sync_assets()` 的默认参数是写死的
+        # "0.1.0"，`--sync-only` 不传的话会把 gui/interface.json 的 version
+        # **回退成 0.1.0**（发版之后一同步，GUI 里的版本号就倒退了，很难发现）。
+        sync_assets(version=read_version())
     else:
         fetch_runtime(args.force)
         fetch_gui(args.force)

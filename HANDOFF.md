@@ -900,6 +900,14 @@ MFAAvalonia 靠它判断有没有新版本）。
     ／ `任务_存在感_未选.png` 0.9916 ／ `任务_每周任务.png` 0.9997。
     **判断"该不该派遣"要看按钮在不在，别拿"任务花了多少秒"当判据。**
 
+62. **`tools/get_gui.py --sync-only` 会把 GUI 里的版本号打回 0.1.0**（2026-09-16 发现并修）——
+    `sync_assets()` 的签名是 `def sync_assets(version="0.1.0")`，完整流程那一路会
+    `sync_assets(version=read_version())`，但 `--sync-only` 那一路**没传 version**，
+    于是每次同步都把 `gui/interface.json` 的 `version` 改写回写死的 `0.1.0`。
+    发版之后同步一下就"版本倒退"，而界面上的版本号很难被注意到。
+    已改成 `sync_assets(version=read_version())`。**踩法验证**：同步完
+    `Select-String gui\interface.json -Pattern '"version"'` 看一眼是不是你要的那个版本。
+
 ---
 
 ## 十一、2026-09-16 下午这一轮的实测记录（BONUS 链终于跑通）

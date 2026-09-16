@@ -91,11 +91,11 @@ def main():
         for f in sorted(files):
             if not f.lower().endswith(".png"):
                 continue
+            path = os.path.join(root, f)
             rel_check = os.path.relpath(path, IMAGE_DIR).replace("\\", "/")
             if rel_check.startswith("_raw/") or "/_raw/" in rel_check:
                 continue  # _raw 是原始素材（整屏截图），不是模板，别参与体检
-            path = os.path.join(root, f)
-            rel = os.path.relpath(path, IMAGE_DIR).replace("\\", "/")
+            rel = rel_check
             t = rd(path)
             if t is None:
                 continue

@@ -16,7 +16,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "Click",
         "target": [
             1070,
@@ -24,10 +24,11 @@
             70,
             70
         ],
-        "max_hit": 1,
+        "max_hit": 3,
         "post_delay": 2500,
         "next": [
             "日常_邮件_进消息",
+            "日常_邮件",
             "日常_邮件_收尾"
         ]
     },
@@ -154,7 +155,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "Click",
         "target": [
             15,
@@ -162,11 +163,12 @@
             60,
             60
         ],
-        "max_hit": 1,
+        "max_hit": 3,
         "post_delay": 4500,
         "next": [
             "日常_使魔探险_已在页",
             "日常_使魔探险_切页",
+            "日常_使魔探险_开面板",
             "日常_使魔探险_收尾",
             "日常_步骤3"
         ]
@@ -249,10 +251,11 @@
         "threshold": 0.85,
         "action": "Click",
         "max_hit": 8,
-        "post_delay": 3000,
+        "post_delay": 4000,
         "next": [
             "日常_派遣_一键派遣",
             "日常_派遣_出发",
+            "日常_派遣_等一拍",
             "日常_使魔探险_收尾"
         ]
     },
@@ -357,7 +360,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "Click",
         "target": [
             15,
@@ -365,13 +368,14 @@
             60,
             60
         ],
-        "max_hit": 1,
+        "max_hit": 3,
         "post_delay": 3000,
         "next": [
             "日常_存在感_切页",
             "日常_存在感_领取",
             "日常_每周任务_切页",
             "日常_每周任务_领取",
+            "日常_存在感",
             "日常_存在感_收尾"
         ]
     },
@@ -517,7 +521,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "Click",
         "target": [
             22,
@@ -528,8 +532,10 @@
         "post_delay": 3000,
         "next": [
             "日常_吼姆_领取",
+            "日常_吼姆",
             "日常_吼姆_收尾"
-        ]
+        ],
+        "max_hit": 3
     },
     "日常_吼姆_领取": {
         "enabled": false,
@@ -606,7 +612,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "Click",
         "target": [
             955,
@@ -614,10 +620,11 @@
             70,
             70
         ],
-        "max_hit": 1,
+        "max_hit": 3,
         "post_delay": 2500,
         "next": [
             "日常_商店_进礼包",
+            "日常_商店",
             "日常_商店_收尾"
         ]
     },
@@ -764,7 +771,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "Click",
         "target": [
             740,
@@ -778,9 +785,11 @@
             "日常_虚轴之庭_回列表",
             "日常_虚轴之庭_翻页",
             "日常_虚轴之庭_开列表",
+            "日常_虚轴之庭",
             "日常_虚轴之庭_收尾",
             "日常_虚轴之庭_逃逸"
-        ]
+        ],
+        "max_hit": 3
     },
     "日常_使魔的爱": {
         "enabled": false,
@@ -792,7 +801,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "Click",
         "target": [
             740,
@@ -806,9 +815,11 @@
             "日常_使魔的爱_回列表",
             "日常_使魔的爱_翻页",
             "日常_使魔的爱_开列表",
+            "日常_使魔的爱",
             "日常_使魔的爱_收尾",
             "日常_使魔的爱_逃逸"
-        ]
+        ],
+        "max_hit": 3
     },
     "日常_开战": {
         "enabled": false,
@@ -1549,27 +1560,16 @@
     },
     "日常_活动BONUS": {
         "enabled": false,
-        "recognition": "TemplateMatch",
-        "template": "通用/主界面.png",
-        "roi": [
-            0,
-            100,
-            240,
-            500
-        ],
-        "threshold": 0.75,
-        "action": "Click",
-        "target": [
-            740,
-            25,
-            90,
-            70
-        ],
-        "post_delay": 4000,
+        "action": "Custom",
+        "custom_action": "bonus_enter",
+        "custom_action_param": {
+            "//": "从任何一页把「BONUS 关详情页」打开：认内容（金色 BONUS 标签 / 活动列表的难度指数 / 详情页的 BONUS 标题）+ 每一步验证。⚠️ 原来这里是「认 `通用/主界面.png` 当门槛，再点 (785,60)」—— 那张图的分数在主界面上会掉到 0.72（阈值 0.75），门槛一不命中整条链就安静地掉到收尾，表现就是「关卡战斗被跳过」。"
+        },
+        "post_delay": 1500,
         "next": [
-            "日常_活动BONUS_进活动",
-            "日常_活动BONUS_开列表",
-            "日常_活动BONUS_回列表",
+            "日常_活动BONUS_双倍券",
+            "日常_活动BONUS_选好友",
+            "日常_活动BONUS_翻页",
             "日常_活动BONUS_收尾"
         ]
     },
@@ -1640,23 +1640,18 @@
     },
     "日常_活动BONUS_点左上": {
         "enabled": false,
-        "recognition": "TemplateMatch",
-        "template": "日常/活动_BONUS.png",
-        "roi": [
-            130,
-            100,
-            1150,
-            620
-        ],
-        "threshold": 0.95,
-        "action": "Click",
-        "target_offset": [
-            -4,
-            78,
-            0,
-            0
-        ],
-        "post_delay": 3500,
+        "action": "Custom",
+        "custom_action": "bonus_find_entry",
+        "custom_action_param": {
+            "//": "认「BONUS」金色标签（全屏唯一锚点）→ 按相对偏移点 → 用详情页标题验证；点不进去会把现场存成 debug/bonus_entry_fail_*.png。实现在 agent/my_bonus.py。为什么不用纯 Click + 固定偏移：偏移是死的，界面一变就点空，而点空是静默的 —— 链子会安静掉到收尾，表现就是「关卡战斗被跳过」。",
+            "entry_offsets": [
+                [
+                    20,
+                    38
+                ]
+            ]
+        },
+        "post_delay": 1500,
         "next": [
             "日常_活动BONUS_双倍券",
             "日常_活动BONUS_选好友",
@@ -1684,23 +1679,12 @@
     },
     "日常_活动BONUS_点左上2": {
         "enabled": false,
-        "recognition": "TemplateMatch",
-        "template": "日常/活动_BONUS.png",
-        "roi": [
-            130,
-            100,
-            1150,
-            620
-        ],
-        "threshold": 0.95,
-        "action": "Click",
-        "target_offset": [
-            -4,
-            78,
-            0,
-            0
-        ],
-        "post_delay": 3500,
+        "action": "Custom",
+        "custom_action": "bonus_find_entry",
+        "custom_action_param": {
+            "//": "和 `点左上` 同一个动作。翻页之后重新找一次入口（活动关卡有时候在第 1/2 页上是空的，翻到第 2/2 页才有）。"
+        },
+        "post_delay": 1500,
         "next": [
             "日常_活动BONUS_双倍券",
             "日常_活动BONUS_选好友",
@@ -2402,6 +2386,7 @@
         "enabled": true,
         "action": "DoNothing",
         "next": [
+            "日常_使魔探险_开面板",
             "日常_使魔探险_回首页",
             "日常_收尾"
         ]
@@ -2419,10 +2404,11 @@
         "threshold": 0.85,
         "action": "Click",
         "max_hit": 10,
-        "post_delay": 900,
+        "post_delay": 3000,
         "next": [
-            "日常_使魔探险_入口",
+            "日常_使魔探险_开面板",
             "日常_使魔探险_回首页",
+            "日常_使魔探险_退一步",
             "日常_收尾"
         ]
     },
@@ -2430,6 +2416,7 @@
         "enabled": true,
         "action": "DoNothing",
         "next": [
+            "日常_邮件",
             "日常_领取邮件_回首页",
             "日常_收尾"
         ]
@@ -2447,10 +2434,11 @@
         "threshold": 0.85,
         "action": "Click",
         "max_hit": 10,
-        "post_delay": 900,
+        "post_delay": 3000,
         "next": [
-            "日常_领取邮件_入口",
+            "日常_邮件",
             "日常_领取邮件_回首页",
+            "日常_领取邮件_退一步",
             "日常_收尾"
         ]
     },
@@ -2458,6 +2446,7 @@
         "enabled": true,
         "action": "DoNothing",
         "next": [
+            "日常_商店",
             "日常_商店购物_回首页",
             "日常_收尾"
         ]
@@ -2475,10 +2464,11 @@
         "threshold": 0.85,
         "action": "Click",
         "max_hit": 10,
-        "post_delay": 900,
+        "post_delay": 3000,
         "next": [
-            "日常_商店购物_入口",
+            "日常_商店",
             "日常_商店购物_回首页",
+            "日常_商店购物_退一步",
             "日常_收尾"
         ]
     },
@@ -2486,6 +2476,7 @@
         "enabled": true,
         "action": "DoNothing",
         "next": [
+            "日常_存在感",
             "日常_领取奖励_回首页",
             "日常_收尾"
         ]
@@ -2503,10 +2494,11 @@
         "threshold": 0.85,
         "action": "Click",
         "max_hit": 10,
-        "post_delay": 900,
+        "post_delay": 3000,
         "next": [
-            "日常_领取奖励_入口",
+            "日常_存在感",
             "日常_领取奖励_回首页",
+            "日常_领取奖励_退一步",
             "日常_收尾"
         ]
     },
@@ -2514,6 +2506,7 @@
         "enabled": true,
         "action": "DoNothing",
         "next": [
+            "日常_活动BONUS",
             "日常_重复刷关_回首页",
             "日常_收尾"
         ]
@@ -2531,10 +2524,11 @@
         "threshold": 0.85,
         "action": "Click",
         "max_hit": 10,
-        "post_delay": 900,
+        "post_delay": 3000,
         "next": [
-            "日常_重复刷关_入口",
+            "日常_活动BONUS",
             "日常_重复刷关_回首页",
+            "日常_重复刷关_退一步",
             "日常_收尾"
         ]
     },
@@ -2547,7 +2541,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "DoNothing",
         "enabled": true,
         "next": [
@@ -2558,6 +2552,7 @@
         "enabled": true,
         "action": "DoNothing",
         "next": [
+            "关卡战斗_就绪",
             "关卡战斗_回首页",
             "日常_收尾"
         ]
@@ -2575,10 +2570,11 @@
         "threshold": 0.85,
         "action": "Click",
         "max_hit": 10,
-        "post_delay": 900,
+        "post_delay": 3000,
         "next": [
-            "关卡战斗_入口",
+            "关卡战斗_就绪",
             "关卡战斗_回首页",
+            "关卡战斗_退一步",
             "日常_收尾"
         ]
     },
@@ -2591,10 +2587,11 @@
             72,
             70
         ],
-        "max_hit": 3,
-        "post_delay": 2000,
+        "max_hit": 6,
+        "post_delay": 3000,
         "next": [
             "日常_使魔探险_开面板",
+            "日常_使魔探险_回首页",
             "日常_使魔探险_退一步",
             "日常_收尾"
         ]
@@ -2608,10 +2605,11 @@
             72,
             70
         ],
-        "max_hit": 3,
-        "post_delay": 2000,
+        "max_hit": 6,
+        "post_delay": 3000,
         "next": [
             "日常_邮件",
+            "日常_领取邮件_回首页",
             "日常_领取邮件_退一步",
             "日常_收尾"
         ]
@@ -2625,10 +2623,11 @@
             72,
             70
         ],
-        "max_hit": 3,
-        "post_delay": 2000,
+        "max_hit": 6,
+        "post_delay": 3000,
         "next": [
             "日常_商店",
+            "日常_商店购物_回首页",
             "日常_商店购物_退一步",
             "日常_收尾"
         ]
@@ -2642,10 +2641,11 @@
             72,
             70
         ],
-        "max_hit": 3,
-        "post_delay": 2000,
+        "max_hit": 6,
+        "post_delay": 3000,
         "next": [
             "日常_存在感",
+            "日常_领取奖励_回首页",
             "日常_领取奖励_退一步",
             "日常_收尾"
         ]
@@ -2659,10 +2659,11 @@
             72,
             70
         ],
-        "max_hit": 3,
-        "post_delay": 2000,
+        "max_hit": 6,
+        "post_delay": 3000,
         "next": [
             "日常_活动BONUS",
+            "日常_重复刷关_回首页",
             "日常_重复刷关_退一步",
             "日常_收尾"
         ]
@@ -2676,12 +2677,24 @@
             72,
             70
         ],
-        "max_hit": 3,
-        "post_delay": 2000,
+        "max_hit": 6,
+        "post_delay": 3000,
         "next": [
             "关卡战斗_就绪",
+            "关卡战斗_回首页",
             "关卡战斗_退一步",
             "日常_收尾"
+        ]
+    },
+    "日常_派遣_等一拍": {
+        "enabled": true,
+        "action": "DoNothing",
+        "max_hit": 3,
+        "post_delay": 3000,
+        "next": [
+            "日常_派遣_一键派遣",
+            "日常_派遣_出发",
+            "日常_使魔探险_收尾"
         ]
     }
 }

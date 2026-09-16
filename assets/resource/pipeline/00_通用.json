@@ -59,7 +59,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "DoNothing"
     },
     "回到主界面": {
@@ -71,7 +71,7 @@
             240,
             500
         ],
-        "threshold": 0.75,
+        "threshold": 0.62,
         "action": "DoNothing"
     },
     "回到主界面_退一步": {

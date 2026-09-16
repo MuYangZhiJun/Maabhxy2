@@ -32,6 +32,17 @@
         "weapon_jitter": 10,
         "check_every": 3.0,
 
+        "//stuck": "网络异常 / 卡在助战页 的自救参数。屏幕上出现「网络连接中」就停下等它（等的这几秒不计入 duration）；点了开战 3 秒后开战按钮还在，就说明战斗没进去 —— 先点掉挡路的弹窗，再重新点开战，重试 reentry_limit 次还进不去就直接收工（别陪它耗满 duration）。认不出来的时候会把现场存成 debug/bonus_fail_*.png。",
+        "net_template": "通用/网络连接中.png",
+        "net_roi": [380, 260, 520, 220],
+        "net_wait": 5.0,
+        "prep_template": "日常/开战.png",
+        "prep_roi": [600, 580, 600, 140],
+        "dialog_template": "通用/确定.png",
+        "dialog_roi": [320, 240, 640, 340],
+        "reentry_limit": 3,
+        "fail_shot_limit": 3,
+
         "rechallenge_button": [638, 613],
         "support_slot": [462, 264],
         "start_button": [879, 659],

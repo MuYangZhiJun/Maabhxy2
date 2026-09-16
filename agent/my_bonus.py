@@ -91,6 +91,13 @@ _DEFAULTS = {
     # 「首页」「战斗」两个导航的点击点（幂等：点错也只是切个分区）
     "nav_home": [656, 60],
     "nav_battle": [785, 60],
+    # 「往上一层」= 点右上角的活动名按钮（和 pipeline 的 `开列表` 同一个做法）
+    "up_button": [1150, 165],
+    "up_tries": 3,
+    # 活动页的翻页箭头（1/2 ↔ 2/2，BONUS 标签只在其中一页上）
+    "pager_template": "日常/活动_翻页.png",
+    "pager_roi": [660, 610, 300, 110],
+    "pager_button": [742, 664],
     # 活动列表页的判据：这两张在列表页上都是 1.0000，在活动地图页上没有
     "act_card_templates": ["日常/活动_难度B.png", "日常/活动_剩余时间.png"],
     "act_card_roi": [130, 100, 1150, 620],
@@ -491,15 +498,30 @@ class BonusEnterAction(CustomAction):
             if self._find_entry(ctl, cfg, "点完活动卡片"):
                 return True
 
-        # 还是不认识 → 点「首页」+「战斗」导航，再看一遍
-        print("[bonus] 认不出这是哪一页 —— 点「首页」再点「战斗」（幂等操作）")
+        # ⚠️ 顺序很重要：**先回「战斗」分区，再往上层翻**。
+        # 反过来的话，主界面上点右上角那个坐标会点到**「回归赠礼」横幅**，
+        # 那是个全屏子页、导航栏还是死的 —— 进去就出不来，整条链直接报废（实测踩过）。
+        print("[bonus] 先点「首页」+「战斗」到战斗分区（幂等，点错也只是切个分区）")
         ctl.click(cfg["nav_home"], 2.5, "首页导航")
         ctl.click(cfg["nav_battle"], 4.0, "战斗导航")
-        if self._click_activity_card(ctl, cfg):
-            if self._find_entry(ctl, cfg, "导航一圈之后"):
-                return True
-        if self._find_entry(ctl, cfg, "导航一圈之后"):
+        if self._find_entry(ctl, cfg, "回到战斗分区后"):
             return True
+        if self._click_activity_card(ctl, cfg):
+            if self._find_entry(ctl, cfg, "回到战斗分区并点卡片后"):
+                return True
+
+        # ⚠️ 2026-09-16 补：游戏会记住「战斗」分区上次停在哪个活动子页，
+        # 所以点「战斗」不一定到得了 BONUS 那个活动页（实测：刷完虚轴之庭之后，
+        # 点战斗直接回到多元裂缝列表，BONUS 标签、活动列表的标识一个都不在）。
+        # 这时候靠**点右上角活动名往上翻**（和 pipeline 里 `开列表` 同一个做法）。
+        for i in range(int(cfg["up_tries"])):
+            print(f"[bonus] 再往上一层（第 {i + 1} 次）")
+            ctl.click(cfg["up_button"], 3.0, "活动名（往上一层）")
+            if self._find_entry(ctl, cfg, f"上翻 {i + 1} 层后"):
+                return True
+            if self._click_activity_card(ctl, cfg):
+                if self._find_entry(ctl, cfg, f"上翻 {i + 1} 层并点卡片后"):
+                    return True
 
         print("[bonus] 没能走到 BONUS 关入口，存张图留证据")
         ctl.save_shot("bonus_entry_fail")
@@ -524,6 +546,11 @@ class BonusEnterAction(CustomAction):
             return True
 
         box = ctl.find(cfg["badge_template"], cfg["badge_roi"])
+        if not box and ctl.has(cfg["pager_template"], cfg["pager_roi"]):
+            # 活动页分 1/2 和 2/2，BONUS 标签只在其中一页上 —— 翻一下再找
+            print(f"[bonus] {where}这页没有 BONUS 标签，先翻一页看看")
+            ctl.click(cfg["pager_button"], 3.0, "翻页")
+            box = ctl.find(cfg["badge_template"], cfg["badge_roi"])
         if not box:
             return False
         cx = box[0] + box[2] // 2

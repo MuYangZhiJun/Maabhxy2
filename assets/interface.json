@@ -10,7 +10,7 @@
     "license": "MIT",
     "welcome": "首次使用请先读 README.md 的「上手四步」。已跑通的任务：启动游戏 / 领取邮件 / 领取奖励（存在感+每周任务+吼姆的礼物）/ 使魔探险 / 商店购物 / 关卡战斗（虚轴之庭 / 使魔的爱 / 活动 BONUS）/ 重复刷关。⚠️ Python 的 maafw 要和 GUI 自带的 MaaFramework 同版本（见 README）。",
     "github": "https://github.com/MuYangZhiJun/Maabhxy2",
-    "version": "0.1.1",
+    "version": "0.1.2",
 
     "controller": [
         {
@@ -606,7 +606,7 @@
                         "日常_虚轴之庭_点卡": {
                             "enabled": true
                         },
-                        "日常_虚轴之庭_出击": {
+                        "日常_虚轴之庭_点关卡": {
                             "enabled": true
                         },
                         "日常_虚轴之庭_快捷战斗1": {

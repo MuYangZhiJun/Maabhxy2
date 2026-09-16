@@ -181,6 +181,17 @@ python tools/template_health.py                                      # 全部模
 python tools/pick_template.py --shots 截图.png --candidate 新图.png    # 候选图 vs 现用图
 ```
 
+**Q：想直接看"屏幕现在写的是什么"？**
+不用眯眼看图，让 OCR 读给你听（排查神器，装一次就行）：
+
+```sh
+python -m pip install rapidocr-onnxruntime
+python tools/read_screen.py --live                 # 把当前屏幕上所有文字连坐标打出来
+python tools/read_screen.py 截图.png --crop 600,500,600,140   # 只看某一块（按钮小字要放大）
+python tools/read_screen.py --tap 254 298          # 点一下再看，逐屏排查用
+python tools/ascii_view.py 截图.png --color        # 实在没招了：转成字符画看布局
+```
+
 ---
 
 ## 目录结构
@@ -191,6 +202,7 @@ assets/resource/pipeline/*.json 流水线：节点、识别、动作、跳转
 assets/resource/image/         模板图（所有识别的依据）
 agent/                         Python agent：自动战斗、BONUS 刷关循环
 tools/                         开发工具（跑任务、校验、裁图、打分、体检、打包）
+                               其中 tools/read_screen.py 能把屏幕上的字读出来（OCR 排查用）
 HANDOFF.md                     开发笔记：当前状态、待办、踩过的坑（改之前先看这个）
 PUBLISH.md                     发布与本仓库作为更新源的说明
 ```

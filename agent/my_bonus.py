@@ -100,6 +100,12 @@ _DEFAULTS = {
     "pager_template": "日常/活动_翻页.png",
     "pager_roi": [660, 610, 300, 110],
     "pager_button": [742, 664],
+    # ---- 开场弹窗 / 卡死兜底 ----
+    # 「回归赠礼」那类全屏活动页**没有出口**：导航栏是死的、返回键没反应、
+    # 点页面里任何位置画面都不动（实测 16 个候选点全无反应）——
+    # 唯一的出路是**重启游戏**。所以这里配了包名和一键重启。
+    "package": "com.miHoYo.HSoDv2Original",
+    "relaunch_wait": 25.0,
     # 活动列表页的判据：这两张在列表页上都是 1.0000，在活动地图页上没有
     "act_card_templates": ["日常/活动_难度B.png", "日常/活动_剩余时间.png"],
     "act_card_roi": [130, 100, 1150, 620],
@@ -613,6 +619,49 @@ class BonusEnterAction(CustomAction):
 @AgentServer.custom_action("bonus_find_entry")
 class BonusFindEntryAction(BonusEnterAction):
     """老名字，保留兼容（老 pipeline / 用户手上的旧配置还会调它）。"""
+
+
+@AgentServer.custom_action("escape_event_trap")
+class EscapeEventTrapAction(CustomAction):
+    """卡在「回归赠礼」那类全屏活动页时的兜底：**重启游戏**。
+
+    为什么只能重启：那页实测**没有出口** —— 导航栏是死的（点首页/战斗/装备都没反应）、
+    系统返回键没反应、页面里点哪都不动（我试了 16 个候选点，画面差异全在噪声级别），
+    最后是靠 `am force-stop` + 重新启动才出来的。
+
+    节点上是**用模板门槛**挂的（`日常/回归赠礼.png` @0.85），所以没卡住时它根本不会被调用。
+    """
+
+    def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
+        raw = getattr(argv, "custom_action_param", None)
+        overrides = {}
+        if raw:
+            try:
+                overrides = json.loads(raw) or {}
+            except Exception:  # noqa: BLE001
+                print(f"[escape] param 不是合法 JSON，忽略: {raw!r}")
+        cfg = _cfg(overrides)
+        ctl = _Ctl(context, cfg)
+        if not ctl.ok:
+            print("[escape] 拿不到 controller，跳过")
+            return True
+
+        pkg = cfg["package"]
+        print(f"[escape] 卡在「回归赠礼」全屏页上 —— 这页没有出口，重启游戏（{pkg}）")
+        try:
+            ctl.controller.post_stop_app(pkg).wait()
+        except Exception as exc:  # noqa: BLE001
+            print(f"[escape] 关闭游戏失败: {exc}")
+        time.sleep(3.0)
+        try:
+            ctl.controller.post_start_app(pkg).wait()
+            print("[escape] 已重新启动，等它起来（后面的节点会等主界面）")
+        except Exception as exc:  # noqa: BLE001
+            print(f"[escape] 启动游戏失败: {exc}")
+            return True
+        time.sleep(float(cfg["relaunch_wait"]))
+        ctl.save_shot("escape_relaunched")
+        return True
 
 
 @AgentServer.custom_action("bonus_battle")

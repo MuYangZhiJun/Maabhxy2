@@ -10,7 +10,7 @@
     "license": "MIT",
     "welcome": "首次使用请先读 README.md 的「上手四步」。已跑通的任务：启动游戏 / 领取邮件 / 领取奖励（存在感+每周任务+吼姆的礼物）/ 使魔探险 / 商店购物 / 关卡战斗（虚轴之庭 / 使魔的爱 / 活动 BONUS）/ 重复刷关。⚠️ Python 的 maafw 要和 GUI 自带的 MaaFramework 同版本（见 README）。",
     "github": "https://github.com/MuYangZhiJun/Maabhxy2",
-    "version": "0.1.6",
+    "version": "0.1.8",
 
     "controller": [
         {
@@ -137,7 +137,7 @@
             "description": "把选中的关卡跑一遍，一直打到没体力为止，中途体力不够会自动兑换存着的双倍体力。",
             "option": [
                 "日常模块",
-                "自动模式",
+                "战斗模式",
                 "使用双倍卷"
             ]
         },
@@ -184,9 +184,8 @@
             "description": "重复刷取BONUS关卡，用于阵营战与赌马活动，默认关闭。",
             "option": [
                 "刷取次数",
-                "自动模式",
-                "使用双倍卷",
-                "碎水晶"
+                "战斗模式",
+                "使用双倍卷"
             ],
             "pipeline_override": {
                 "日常_活动BONUS": {
@@ -240,6 +239,9 @@
                         },
                         "日常_邮件_领取_关窗": {
                             "enabled": true
+                        },
+                        "日常_邮件_领取_关窗_确定": {
+                            "enabled": true
                         }
                     }
                 },
@@ -250,6 +252,9 @@
                             "enabled": true
                         },
                         "日常_邮件_体力_关窗": {
+                            "enabled": true
+                        },
+                        "日常_邮件_体力_关窗_确定": {
                             "enabled": true
                         }
                     }
@@ -370,6 +375,9 @@
                         "日常_存在感_关窗": {
                             "enabled": true
                         },
+                        "日常_存在感_关窗_确定": {
+                            "enabled": true
+                        },
                         "日常_存在感_收尾": {
                             "enabled": true
                         }
@@ -385,6 +393,9 @@
                             "enabled": true
                         },
                         "日常_每周任务_关窗": {
+                            "enabled": true
+                        },
+                        "日常_每周任务_关窗_确定": {
                             "enabled": true
                         },
                         "日常_存在感_收尾": {
@@ -404,6 +415,9 @@
                         "日常_吼姆_关窗": {
                             "enabled": true
                         },
+                        "日常_吼姆_关窗_确定": {
+                            "enabled": true
+                        },
                         "日常_吼姆_收尾": {
                             "enabled": true
                         }
@@ -417,56 +431,21 @@
             ]
         },
 
-        "自动模式": {
-            "type": "switch",
-            "label": "自动模式",
-            "description": "选项关闭时不进行操作，选项开启时自动使用一号位武器并向右走。",
+        "战斗模式": {
+            "type": "select",
+            "label": "战斗模式",
+            "description": "打完一局之后怎么打：自动战斗会用一号位武器并向右走，挂机只等结算。带“+碎水晶”的那两档会在体力耗尽后花水晶补体力继续刷；不带的体力用完就收工（只兑免费双倍体力）。默认自动战斗，不花水晶。",
+            "default_case": "自动战斗",
             "cases": [
                 {
-                    "name": "Yes",
+                    "name": "自动战斗",
                     "pipeline_override": {
                         "日常_活动BONUS_打完_自动": {
                             "enabled": true
-                        }
-                    }
-                },
-                {
-                    "name": "No",
-                    "pipeline_override": {
-                        "日常_活动BONUS_打完_挂机": {
-                            "enabled": true
-                        }
-                    }
-                }
-            ],
-            "default_case": "Yes"
-        },
-
-        "碎水晶": {
-            "type": "switch",
-            "label": "体力不足使用水晶补充",
-            "description": "选项关闭时不进行操作，选项开启时在体力耗尽后自动花费水晶补充体力，继续刷取。",
-            "cases": [
-                {
-                    "name": "Yes",
-                    "pipeline_override": {
-                        "日常_活动BONUS_打完_自动_水晶": {
-                            "enabled": true
-                        },
-                        "日常_活动BONUS_打完_挂机_水晶": {
-                            "enabled": true
-                        },
-                        "日常_活动BONUS_打完_自动": {
-                            "enabled": false
                         },
                         "日常_活动BONUS_打完_挂机": {
                             "enabled": false
-                        }
-                    }
-                },
-                {
-                    "name": "No",
-                    "pipeline_override": {
+                        },
                         "日常_活动BONUS_打完_自动_水晶": {
                             "enabled": false
                         },
@@ -474,9 +453,59 @@
                             "enabled": false
                         }
                     }
+                },
+                {
+                    "name": "挂机",
+                    "pipeline_override": {
+                        "日常_活动BONUS_打完_自动": {
+                            "enabled": false
+                        },
+                        "日常_活动BONUS_打完_挂机": {
+                            "enabled": true
+                        },
+                        "日常_活动BONUS_打完_自动_水晶": {
+                            "enabled": false
+                        },
+                        "日常_活动BONUS_打完_挂机_水晶": {
+                            "enabled": false
+                        }
+                    }
+                },
+                {
+                    "name": "自动战斗+碎水晶",
+                    "pipeline_override": {
+                        "日常_活动BONUS_打完_自动": {
+                            "enabled": false
+                        },
+                        "日常_活动BONUS_打完_挂机": {
+                            "enabled": false
+                        },
+                        "日常_活动BONUS_打完_自动_水晶": {
+                            "enabled": true
+                        },
+                        "日常_活动BONUS_打完_挂机_水晶": {
+                            "enabled": false
+                        }
+                    }
+                },
+                {
+                    "name": "挂机+碎水晶",
+                    "pipeline_override": {
+                        "日常_活动BONUS_打完_自动": {
+                            "enabled": false
+                        },
+                        "日常_活动BONUS_打完_挂机": {
+                            "enabled": false
+                        },
+                        "日常_活动BONUS_打完_自动_水晶": {
+                            "enabled": false
+                        },
+                        "日常_活动BONUS_打完_挂机_水晶": {
+                            "enabled": true
+                        }
+                    }
                 }
-            ],
-            "default_case": "No"
+            ]
         },
 
         "刷取次数": {

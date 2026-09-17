@@ -1078,7 +1078,7 @@
             1150,
             620
         ],
-        "threshold": 0.85,
+        "threshold": 0.55,
         "action": "Click",
         "post_delay": 3500,
         "next": [
@@ -1141,14 +1141,14 @@
     "日常_使魔的爱_点卡": {
         "enabled": false,
         "recognition": "TemplateMatch",
-        "template": "日常/使魔的爱_卡片.png",
+        "template": "日常/使魔的爱_文字.png",
         "roi": [
             130,
             100,
             1150,
             620
         ],
-        "threshold": 0.85,
+        "threshold": 0.95,
         "action": "Click",
         "post_delay": 3500,
         "next": [
@@ -1156,7 +1156,13 @@
             "日常_使魔的爱_点卡",
             "日常_使魔的爱_收尾"
         ],
-        "max_hit": 3
+        "max_hit": 3,
+        "target_offset": [
+            -1,
+            83,
+            0,
+            0
+        ]
     },
     "日常_虚轴之庭_回列表": {
         "enabled": false,

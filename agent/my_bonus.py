@@ -65,6 +65,17 @@ _DEFAULTS = {
     "dialog_roi": [320, 240, 640, 340],
     "reentry_limit": 3,
     "fail_shot_limit": 3,
+    # ---- 选助战（`bonus_pick_support`）----
+    # 「选择助战好友」点下去之后好友列表**可能要 5~10 秒才出来**，原来只等 3.5 秒
+    # → 认不到就掉兜底 → 什么都没打成（用户报「卡在关卡 BONUS 界面」就是这个）。
+    "ready_template": "日常/备用装备加成.png",
+    "ready_roi": [400, 350, 500, 100],
+    "support_tries": 4,
+    "support_polls": 5,
+    "support_wait": 2.5,
+    # ⚠️ 「选择助战好友」阈值必须 0.95：体力不够时按钮变成「补充体力」，
+    # 而那张模板在错页面上还有 0.9376 分（0.85 就误判，实测踩过）
+    "support_threshold": 0.95,
     # ---- BONUS 关入口 ----
     # 金色「BONUS」标签是全屏唯一的锚点（每张截图都 1.0000，第 1/2 页上没有它）。
     "badge_template": "日常/活动_BONUS.png",
@@ -93,9 +104,15 @@ _DEFAULTS = {
     # 「首页」「战斗」两个导航的点击点（幂等：点错也只是切个分区）
     "nav_home": [656, 60],
     "nav_battle": [785, 60],
-    # 「往上一层」= 点右上角的活动名按钮（和 pipeline 的 `开列表` 同一个做法）
+    # 「往上一层」= 点右上角的活动标题（用户 2026-09-17 指正：不用先回首页再切回来，
+    # 游戏会记住上次离开的界面，**直接点标题**就行）
     "up_button": [1150, 165],
     "up_tries": 3,
+    # 「我在不在主界面」的判据：顶部导航栏里**亮起的首页图标**（选中态实心高亮）。
+    # 实测主界面 0.91~1.00、子页 0.68~0.69 → 阈值 0.80。⚠️ roi 跟着模板走（模板在 (605,35)）。
+    "home_template": "通用/主界面.png",
+    "home_roi": [560, 10, 180, 110],
+    "home_threshold": 0.80,
     # 活动页的翻页箭头（1/2 ↔ 2/2，BONUS 标签只在其中一页上）
     "pager_template": "日常/活动_翻页.png",
     "pager_roi": [660, 610, 300, 110],
@@ -538,27 +555,28 @@ class BonusEnterAction(CustomAction):
             if self._find_entry(ctl, cfg, "点完活动卡片"):
                 return True
 
-        # ⚠️ 顺序很重要：**先回「战斗」分区，再往上层翻**。
-        # 反过来的话，主界面上点右上角那个坐标会点到**「回归赠礼」横幅**，
-        # 那是个全屏子页、导航栏还是死的 —— 进去就出不来，整条链直接报废（实测踩过）。
-        print("[bonus] 先点「首页」+「战斗」到战斗分区（幂等，点错也只是切个分区）")
-        ctl.click(cfg["nav_home"], 2.5, "首页导航")
-        ctl.click(cfg["nav_battle"], 4.0, "战斗导航")
-        if self._find_entry(ctl, cfg, "回到战斗分区后"):
-            return True
-        if self._trap(ctl, cfg, "回到战斗分区后"):
-            return True
-        if self._click_activity_card(ctl, cfg):
-            if self._find_entry(ctl, cfg, "回到战斗分区并点卡片后"):
+        # ⚠️ 2026-09-17 用户指正：「首页 → 战斗」那一步**是多余的** ——
+        # 游戏会记住上次离开的界面，**直接点右上角那个活动标题往上层翻**就行。
+        # 但主界面上点右上角那个坐标会点到**「回归赠礼」横幅**（全屏死胡同、进得去出不来，实测踩过两次），
+        # 所以分成两种情况：
+        #   · 在主界面上（认「亮起的首页图标」）→ 点一次「战斗」进分区（游戏会自己回到上次那个活动页）
+        #   · 已经不在主界面 → 直接点右上角标题往上翻
+        if self._on_home(ctl, cfg):
+            print("[bonus] 在主界面上 —— 点一次「战斗」进分区（游戏会回到上次那个活动页）")
+            ctl.click(cfg["nav_battle"], 4.0, "战斗导航")
+            if self._find_entry(ctl, cfg, "进战斗分区后"):
                 return True
+            if self._trap(ctl, cfg, "进战斗分区后"):
+                return True
+            if self._click_activity_card(ctl, cfg):
+                if self._find_entry(ctl, cfg, "进战斗分区并点卡片后"):
+                    return True
 
-        # ⚠️ 2026-09-16 补：游戏会记住「战斗」分区上次停在哪个活动子页，
-        # 所以点「战斗」不一定到得了 BONUS 那个活动页（实测：刷完虚轴之庭之后，
-        # 点战斗直接回到多元裂缝列表，BONUS 标签、活动列表的标识一个都不在）。
-        # 这时候靠**点右上角活动名往上翻**（和 pipeline 里 `开列表` 同一个做法）。
+        # 游戏会记住「战斗」分区上次停在哪个活动子页，所以点「战斗」不一定到得了 BONUS 那个活动页。
+        # 这时候靠**点右上角活动标题往上翻**（和 pipeline 里 `开列表` 同一个做法）。
         for i in range(int(cfg["up_tries"])):
-            print(f"[bonus] 再往上一层（第 {i + 1} 次）")
-            ctl.click(cfg["up_button"], 3.0, "活动名（往上一层）")
+            print(f"[bonus] 点右上角标题往上一层（第 {i + 1} 次）")
+            ctl.click(cfg["up_button"], 3.0, "右上角标题（往上一层）")
             if self._find_entry(ctl, cfg, f"上翻 {i + 1} 层后"):
                 return True
             # 上翻那一下也可能正好点在「回归赠礼」横幅上 —— 那就得重启游戏自救
@@ -573,6 +591,15 @@ class BonusEnterAction(CustomAction):
         return True
 
     # ---- 内部小步骤 ----
+
+    @staticmethod
+    def _on_home(ctl, cfg):
+        """在不在主界面上？认的是**顶部导航栏里亮起的「首页」图标**（选中态是实心高亮）。
+
+        实测：主界面 0.91~1.00、子页（活动列表 / 关卡详情页 / 地图页）0.68~0.69 → 阈值 0.80。
+        """
+        return ctl.find(cfg["home_template"], cfg["home_roi"],
+                        threshold=cfg["home_threshold"]) is not None
 
     @staticmethod
     def _trap(ctl, cfg, where=""):
@@ -655,6 +682,106 @@ class BonusEnterAction(CustomAction):
 @AgentServer.custom_action("bonus_find_entry")
 class BonusFindEntryAction(BonusEnterAction):
     """老名字，保留兼容（老 pipeline / 用户手上的旧配置还会调它）。"""
+
+
+@AgentServer.custom_action("bonus_pick_support")
+class BonusPickSupportAction(CustomAction):
+    """「选助战好友 → 挑一个助战」这一段，改成**每步验证 + 重试**。
+
+    为什么不能只点一下就算完（2026-09-17 用户报「卡在关卡 BONUS 界面，没去点选择助战好友」）：
+    `选择助战好友` 点下去之后，好友列表**有时候要 5~10 秒才出来**（网络慢、页面还在滑），
+    而链子原来只等 3.5 秒：认不到 `助战_备用装备` 就掉到兜底坐标乱点一下、再点一次「开战」重试，
+    最后什么都没打成 —— 而且**全程不报错**，外面看就是"卡在那儿不动"。
+
+    现在：
+      1. 已经在助战确认页（认得到「备用装备加成」）→ 直接过
+      2. 还在关卡详情页（认得到「选择助战好友」）→ 点它，然后**轮询等好友列表**（每次 2.5 秒，最多 5 次）
+      3. 等到列表 → 优先认「备用装备」那一格再点（认不到才按固定坐标点第一格）
+      4. 每一轮都验证「到助战确认页了没」，没到就再来一轮（最多 4 轮）
+      5. 全都不行 → 存 `debug/bonus_support_fail_*.png` 留证据
+    """
+
+    def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
+        raw = getattr(argv, "custom_action_param", None)
+        overrides = {}
+        if raw:
+            try:
+                overrides = json.loads(raw) or {}
+            except Exception:  # noqa: BLE001
+                print(f"[bonus] param 不是合法 JSON，忽略: {raw!r}")
+        cfg = _cfg(overrides)
+        ctl = _Ctl(context, cfg)
+        if not ctl.ok:
+            print("[bonus] 拿不到 controller，跳过选助战")
+            return True
+
+        def on_ready():
+            return ctl.has(cfg["ready_template"], cfg["ready_roi"])
+
+        def on_detail():
+            """是不是在关卡详情页上？
+
+            ⚠️ 别拿「选择助战好友」当判据 —— 那行字在**体力不足时会变成「补充体力」**，
+            而 `选择助战好友.png` 在那种页面上还有 **0.9376** 分（阈值 0.85 就误判了，
+            实测踩过：以为在详情页、点下去其实点的是「补充体力」，弹了花水晶的窗）。
+            改用详情页上稳定的两个东西：BONUS 标题 / 使用双倍券。
+            """
+            return (ctl.has(cfg["entry_title_template"], cfg["entry_title_roi"])
+                    or ctl.has(cfg["double_template"], cfg["double_roi"]))
+
+        def crystal_dialog():
+            """「补充体力」窗（花水晶补体力）。体力不够时点按钮就会弹它。"""
+            return ctl.find(cfg["crystal_template"], cfg["crystal_roi"], threshold=0.95)
+
+        if on_ready():
+            print("[bonus] 已经在助战确认页上了，直接过")
+            return True
+
+        for attempt in range(1, int(cfg["support_tries"]) + 1):
+            print(f"[bonus] 选助战：第 {attempt}/{cfg['support_tries']} 轮")
+
+            # 体力不够时页面底部那个按钮会变成「补充体力」，点它会弹花水晶的窗 ——
+            # 我们不该买，看到窗就直接点「取消」收工。
+            box = crystal_dialog()
+            if box:
+                print("[bonus] 页面/弹窗是「补充体力」（体力不够，要花水晶）—— 点取消，收工")
+                ctl.click_offset(box, cfg["crystal_cancel_offset"], 2.0, "取消")
+                return True
+
+            if not on_ready() and on_detail():
+                btn = ctl.find(cfg["entry_support_template"], cfg["entry_support_roi"],
+                               threshold=cfg["support_threshold"])
+                if btn:
+                    pt = (btn[0] + btn[2] // 2, btn[1] + btn[3] // 2)
+                    ctl.click(pt, 1.5, "选择助战好友")
+                else:
+                    print("[bonus] 详情页上认不到「选择助战好友」"
+                          "（多半是体力不够、按钮文字改成「补充体力」了）—— 收工")
+                    ctl.save_shot("bonus_support_nostamina")
+                    return True
+            # 轮询等好友列表（这一步是这次修的重点：别只等一次）
+            backup = None
+            for poll in range(int(cfg["support_polls"])):
+                if on_ready():
+                    print("[bonus] 到助战确认页了")
+                    return True
+                backup = ctl.find(cfg["backup_template"], cfg["backup_roi"])
+                if backup:
+                    break
+                time.sleep(float(cfg["support_wait"]))
+            if on_ready():
+                return True
+            if backup:
+                ctl.click_offset(backup, cfg["backup_offset"], 3.0, "选备用装备")
+            else:
+                print("[bonus] 还没等到好友列表 —— 按固定坐标点第一格试试")
+                ctl.click(cfg["support_slot"], 3.0, "选好友（兜底坐标）")
+            if on_ready():
+                print("[bonus] 到助战确认页了")
+                return True
+        print("[bonus] 选助战试了几轮都没到确认页，存图留证据")
+        ctl.save_shot("bonus_support_fail")
+        return True
 
 
 @AgentServer.custom_action("escape_event_trap")

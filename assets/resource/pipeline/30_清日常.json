@@ -1770,23 +1770,16 @@
     },
     "日常_活动BONUS_选好友": {
         "enabled": false,
-        "recognition": "TemplateMatch",
-        "template": "日常/选择助战好友.png",
-        "roi": [
-            400,
-            600,
-            700,
-            120
-        ],
-        "threshold": 0.95,
-        "action": "Click",
-        "post_wait_freezes": 1000,
-        "post_delay": 3500,
+        "action": "Custom",
+        "post_delay": 1500,
         "next": [
-            "日常_活动BONUS_点好友",
-            "日常_活动BONUS_点好友_按坐标",
+            "日常_活动BONUS_开战",
             "日常_活动BONUS_收尾"
-        ]
+        ],
+        "custom_action": "bonus_pick_support",
+        "custom_action_param": {
+            "//": "点「选择助战好友」→ 轮询等好友列表（最多 5×2.5 秒）→ 优先认「备用装备」那一格 → 每轮验证「到助战确认页没」，最多 4 轮。实现在 agent/my_bonus.py"
+        }
     },
     "日常_活动BONUS_点好友": {
         "enabled": false,

@@ -1,109 +1,109 @@
 {
-    "通用_等网络连接": {
-        "recognition": "TemplateMatch",
-        "template": "通用/网络连接中.png",
-        "roi": [
-            400,
-            280,
-            480,
-            200
-        ],
-        "threshold": 0.85,
-        "action": "DoNothing",
-        "max_hit": 40,
-        "post_delay": 3000,
-        "next": [
-            "通用_等网络连接"
-        ]
-    },
-    "通用_关闭弹窗": {
-        "recognition": "TemplateMatch",
-        "template": "通用/关闭X.png",
-        "roi": [
-            1080,
-            20,
-            200,
-            140
-        ],
-        "threshold": 0.85,
-        "action": "Click",
-        "max_hit": 8,
-        "post_delay": 800,
-        "next": [
-            "通用_关闭弹窗"
-        ]
-    },
-    "通用_确定": {
-        "recognition": "TemplateMatch",
-        "template": "通用/确定.png",
-        "roi": [
-            320,
-            240,
-            640,
-            340
-        ],
-        "threshold": 0.85,
-        "action": "Click",
-        "max_hit": 6,
-        "post_delay": 600,
-        "next": [
-            "通用_确定"
-        ]
-    },
-    "主界面_就绪": {
-        "recognition": "TemplateMatch",
-        "template": "通用/主界面.png",
-        "roi": [
-            0,
-            100,
-            240,
-            500
-        ],
-        "threshold": 0.62,
-        "action": "DoNothing",
-        "next": [
-            "日常_开始"
-        ]
-    },
-    "回到主界面": {
-        "recognition": "TemplateMatch",
-        "template": "通用/主界面.png",
-        "roi": [
-            0,
-            100,
-            240,
-            500
-        ],
-        "threshold": 0.62,
-        "action": "DoNothing"
-    },
-    "回到主界面_退一步": {
-        "recognition": "TemplateMatch",
-        "template": "通用/返回箭头.png",
-        "roi": [
-            0,
-            0,
-            240,
-            200
-        ],
-        "threshold": 0.85,
-        "action": "Click",
-        "max_hit": 15,
-        "post_delay": 800,
-        "next": [
-            "回到主界面",
-            "回到主界面_退一步"
-        ]
-    },
-    "_内部_模板识别": {
-        "recognition": "TemplateMatch",
-        "template": "通用/主界面.png",
-        "roi": [
-            0,
-            0,
-            1280,
-            720
-        ],
-        "threshold": 0.85
-    }
+  "通用_等网络连接": {
+    "recognition": "TemplateMatch",
+    "template": "通用/网络连接中.png",
+    "roi": [
+      400,
+      280,
+      480,
+      200
+    ],
+    "threshold": 0.85,
+    "action": "DoNothing",
+    "max_hit": 40,
+    "post_delay": 3000,
+    "next": [
+      "通用_等网络连接"
+    ]
+  },
+  "通用_关闭弹窗": {
+    "recognition": "TemplateMatch",
+    "template": "通用/关闭X.png",
+    "roi": [
+      1080,
+      20,
+      200,
+      140
+    ],
+    "threshold": 0.85,
+    "action": "Click",
+    "max_hit": 8,
+    "post_delay": 800,
+    "next": [
+      "通用_关闭弹窗"
+    ]
+  },
+  "通用_确定": {
+    "recognition": "TemplateMatch",
+    "template": "通用/确定.png",
+    "roi": [
+      320,
+      240,
+      640,
+      340
+    ],
+    "threshold": 0.85,
+    "action": "Click",
+    "max_hit": 6,
+    "post_delay": 600,
+    "next": [
+      "通用_确定"
+    ]
+  },
+  "主界面_就绪": {
+    "recognition": "TemplateMatch",
+    "template": "通用/主界面.png",
+    "roi": [
+      560,
+      10,
+      180,
+      110
+    ],
+    "threshold": 0.8,
+    "action": "DoNothing",
+    "next": [
+      "日常_开始"
+    ]
+  },
+  "回到主界面": {
+    "recognition": "TemplateMatch",
+    "template": "通用/主界面.png",
+    "roi": [
+      560,
+      10,
+      180,
+      110
+    ],
+    "threshold": 0.8,
+    "action": "DoNothing"
+  },
+  "回到主界面_退一步": {
+    "recognition": "TemplateMatch",
+    "template": "通用/返回箭头.png",
+    "roi": [
+      0,
+      0,
+      240,
+      200
+    ],
+    "threshold": 0.85,
+    "action": "Click",
+    "max_hit": 15,
+    "post_delay": 800,
+    "next": [
+      "回到主界面",
+      "回到主界面_退一步"
+    ]
+  },
+  "_内部_模板识别": {
+    "recognition": "TemplateMatch",
+    "template": "通用/主界面.png",
+    "roi": [
+      0,
+      0,
+      1280,
+      720
+    ],
+    "threshold": 0.85
+  }
 }

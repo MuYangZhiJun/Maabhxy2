@@ -51,12 +51,12 @@
         "recognition": "TemplateMatch",
         "template": "通用/主界面.png",
         "roi": [
-            0,
-            100,
-            240,
-            500
+            560,
+            10,
+            180,
+            110
         ],
-        "threshold": 0.62,
+        "threshold": 0.8,
         "action": "Click",
         "target": [
             1070,
@@ -190,12 +190,12 @@
         "recognition": "TemplateMatch",
         "template": "通用/主界面.png",
         "roi": [
-            0,
-            100,
-            240,
-            500
+            560,
+            10,
+            180,
+            110
         ],
-        "threshold": 0.62,
+        "threshold": 0.8,
         "action": "Click",
         "target": [
             15,
@@ -395,12 +395,12 @@
         "recognition": "TemplateMatch",
         "template": "通用/主界面.png",
         "roi": [
-            0,
-            100,
-            240,
-            500
+            560,
+            10,
+            180,
+            110
         ],
-        "threshold": 0.62,
+        "threshold": 0.8,
         "action": "Click",
         "target": [
             15,
@@ -556,12 +556,12 @@
         "recognition": "TemplateMatch",
         "template": "通用/主界面.png",
         "roi": [
-            0,
-            100,
-            240,
-            500
+            560,
+            10,
+            180,
+            110
         ],
-        "threshold": 0.62,
+        "threshold": 0.8,
         "action": "Click",
         "target": [
             22,
@@ -647,12 +647,12 @@
         "recognition": "TemplateMatch",
         "template": "通用/主界面.png",
         "roi": [
-            0,
-            100,
-            240,
-            500
+            560,
+            10,
+            180,
+            110
         ],
-        "threshold": 0.62,
+        "threshold": 0.8,
         "action": "Click",
         "target": [
             955,
@@ -806,12 +806,12 @@
         "recognition": "TemplateMatch",
         "template": "通用/主界面.png",
         "roi": [
-            0,
-            100,
-            240,
-            500
+            560,
+            10,
+            180,
+            110
         ],
-        "threshold": 0.62,
+        "threshold": 0.8,
         "action": "Click",
         "target": [
             740,
@@ -836,12 +836,12 @@
         "recognition": "TemplateMatch",
         "template": "通用/主界面.png",
         "roi": [
-            0,
-            100,
-            240,
-            500
+            560,
+            10,
+            180,
+            110
         ],
-        "threshold": 0.62,
+        "threshold": 0.8,
         "action": "Click",
         "target": [
             740,
@@ -1071,14 +1071,14 @@
     "日常_虚轴之庭_点关卡": {
         "enabled": false,
         "recognition": "TemplateMatch",
-        "template": "日常/虚轴之庭_关卡入口.png",
+        "template": "日常/虚轴之庭_出击.png",
         "roi": [
-            130,
-            100,
-            1150,
-            620
+            560,
+            400,
+            320,
+            240
         ],
-        "threshold": 0.55,
+        "threshold": 0.85,
         "action": "Click",
         "post_delay": 3500,
         "next": [
@@ -1195,12 +1195,6 @@
     "日常_虚轴之庭_开列表": {
         "enabled": true,
         "action": "Click",
-        "target": [
-            1080,
-            140,
-            140,
-            50
-        ],
         "post_delay": 3000,
         "max_hit": 3,
         "next": [
@@ -1209,7 +1203,16 @@
             "日常_虚轴之庭_点卡",
             "日常_虚轴之庭_开列表",
             "日常_虚轴之庭_逃逸"
-        ]
+        ],
+        "recognition": "TemplateMatch",
+        "template": "日常/虚轴之庭_标题.png",
+        "roi": [
+            1000,
+            90,
+            280,
+            110
+        ],
+        "threshold": 0.9
     },
     "日常_虚轴之庭_逃逸": {
         "enabled": true,
@@ -2601,12 +2604,12 @@
         "recognition": "TemplateMatch",
         "template": "通用/主界面.png",
         "roi": [
-            0,
-            100,
-            240,
-            500
+            560,
+            10,
+            180,
+            110
         ],
-        "threshold": 0.62,
+        "threshold": 0.8,
         "action": "DoNothing",
         "enabled": true,
         "next": [

@@ -1,0 +1,470 @@
+############ 我到底改了哪些文件 (cfb90bb..HEAD) ############
+ assets/interface.json                              |   93 +-
+ ...5\240\347\244\274_\345\205\263\351\227\255.png" |  Bin 0 -> 7258 bytes
+ .../pipeline/00_\351\200\232\347\224\250.json"     |   13 +-
+ .../pipeline/10_\345\220\257\345\212\250.json"     |  119 +-
+ .../30_\346\270\205\346\227\245\345\270\270.json"  |  238 ++--
+ tools/templates.json                               | 1356 ++++++++++----------
+ 6 files changed, 1012 insertions(+), 807 deletions(-)
+
+
+############ 未提交改动 ############
+?? ACT.txt
+?? B1.txt
+?? BASE2.txt
+?? BASE_MOD.txt
+?? CC.txt
+?? CH.txt
+?? CMP.txt
+?? COORD.txt
+?? D2.txt
+?? DEF.txt
+?? DIFF.txt
+?? DUMP.txt
+?? EVERY.txt
+?? EVID.txt
+?? FIX_NAV2.py
+?? FULL.txt
+?? GITLOG.txt
+?? GOOD.json
+?? H1.txt
+?? HIT.txt
+?? INFO.txt
+?? INV.txt
+?? K.txt
+?? LOC.txt
+?? LST.txt
+?? MOD.txt
+?? OPT.txt
+?? OPT2.txt
+?? P.txt
+?? RUN.txt
+?? STEP.txt
+?? SW.txt
+?? TRACE.txt
+?? VERIFY.txt
+?? _act.py
+?? _all.py
+?? _base2.py
+?? _base_mod.py
+?? _cand.py
+?? _cand.txt
+?? _ch.py
+?? _chain.py
+?? _chain.txt
+?? _chains.txt
+?? _cmp.py
+?? _coord.py
+?? _d1.txt
+?? _d2.py
+?? _def.py
+?? _def.txt
+?? _def2.py
+?? _diff.py
+?? _dump.py
+?? _dump.txt
+?? _dump2.py
+?? _every.py
+?? _evid.py
+?? _fin.py
+?? _final.py
+?? _final.txt
+?? _full.py
+?? _full.txt
+?? _full2.py
+?? _git.py
+?? _gitlog.py
+?? _h1.py
+?? _hit.py
+?? _info.py
+?? _key.py
+?? _key.txt
+?? _loc.py
+?? _log.txt
+?? _mydiff.py
+?? _nodes.py
+?? _nodes.txt
+?? _o3.py
+?? _opt.txt
+?? _opt2.py
+?? _optcases.txt
+?? _ov.py
+?? _ov.txt
+?? _p.py
+?? _plan.py
+?? _plan.txt
+?? _q.py
+?? _run.py
+?? _sim.py
+?? _sim.txt
+?? _state.py
+?? _state.txt
+?? _step.py
+?? _sw.py
+?? _tplhealth.py
+?? _trace.py
+?? _trace.txt
+?? _verify.py
+?? _z.py
+?? z.txt
+
+
+############ interface.json 差异 ############
+diff --git a/assets/interface.json b/assets/interface.json
+index 1a3baf3..f822557 100644
+--- a/assets/interface.json
++++ b/assets/interface.json
+@@ -10,7 +10,7 @@
+     "license": "MIT",
+     "welcome": "首次使用请先读 README.md 的「上手四步」。已跑通的任务：启动游戏 / 领取邮件 / 领取奖励（存在感+每周任务+吼姆的礼物）/ 使魔探险 / 商店购物 / 关卡战斗（虚轴之庭 / 使魔的爱 / 活动 BONUS）/ 重复刷关。⚠️ Python 的 maafw 要和 GUI 自带的 MaaFramework 同版本（见 README）。",
+     "github": "https://github.com/MuYangZhiJun/Maabhxy2",
+-    "version": "0.1.6",
++    "version": "0.1.8",
+ 
+     "controller": [
+         {
+@@ -137,7 +137,7 @@
+             "description": "把选中的关卡跑一遍，一直打到没体力为止，中途体力不够会自动兑换存着的双倍体力。",
+             "option": [
+                 "日常模块",
+-                "自动模式",
++                "战斗模式",
+                 "使用双倍卷"
+             ]
+         },
+@@ -184,9 +184,8 @@
+             "description": "重复刷取BONUS关卡，用于阵营战与赌马活动，默认关闭。",
+             "option": [
+                 "刷取次数",
+-                "自动模式",
+-                "使用双倍卷",
+-                "碎水晶"
++                "战斗模式",
++                "使用双倍卷"
+             ],
+             "pipeline_override": {
+                 "日常_活动BONUS": {
+@@ -240,6 +239,9 @@
+                         },
+                         "日常_邮件_领取_关窗": {
+                             "enabled": true
++                        },
++                        "日常_邮件_领取_关窗_确定": {
++                            "enabled": true
+                         }
+                     }
+                 },
+@@ -251,6 +253,9 @@
+                         },
+                         "日常_邮件_体力_关窗": {
+                             "enabled": true
++                        },
++                        "日常_邮件_体力_关窗_确定": {
++                            "enabled": true
+                         }
+                     }
+                 },
+@@ -370,6 +375,9 @@
+                         "日常_存在感_关窗": {
+                             "enabled": true
+                         },
++                        "日常_存在感_关窗_确定": {
++                            "enabled": true
++                        },
+                         "日常_存在感_收尾": {
+                             "enabled": true
+                         }
+@@ -387,6 +395,9 @@
+                         "日常_每周任务_关窗": {
+                             "enabled": true
+                         },
++                        "日常_每周任务_关窗_确定": {
++                            "enabled": true
++                        },
+                         "日常_存在感_收尾": {
+                             "enabled": true
+                         }
+@@ -404,6 +415,9 @@
+                         "日常_吼姆_关窗": {
+                             "enabled": true
+                         },
++                        "日常_吼姆_关窗_确定": {
++                            "enabled": true
++                        },
+                         "日常_吼姆_收尾": {
+                             "enabled": true
+                         }
+@@ -417,66 +431,81 @@
+             ]
+         },
+ 
+-        "自动模式": {
+-            "type": "switch",
+-            "label": "自动模式",
+-            "description": "选项关闭时不进行操作，选项开启时自动使用一号位武器并向右走。",
++        "战斗模式": {
++            "type": "select",
++            "label": "战斗模式",
++            "description": "打完一局之后怎么打：自动战斗会用一号位武器并向右走，挂机只等结算。带“+碎水晶”的那两档会在体力耗尽后花水晶补体力继续刷；不带的体力用完就收工（只兑免费双倍体力）。默认自动战斗，不花水晶。",
++            "default_case": "自动战斗",
+             "cases": [
+                 {
+-                    "name": "Yes",
++                    "name": "自动战斗",
+                     "pipeline_override": {
+                         "日常_活动BONUS_打完_自动": {
+                             "enabled": true
++                        },
++                        "日常_活动BONUS_打完_挂机": {
++                            "enabled": false
++                        },
++                        "日常_活动BONUS_打完_自动_水晶": {
++                            "enabled": false
++                        },
++                        "日常_活动BONUS_打完_挂机_水晶": {
++                            "enabled": false
+                         }
+                     }
+                 },
+                 {
+-                    "name": "No",
++                    "name": "挂机",
+                     "pipeline_override": {
++                        "日常_活动BONUS_打完_自动": {
++                            "enabled": false
++                        },
+                         "日常_活动BONUS_打完_挂机": {
+                             "enabled": true
++                        },
++                        "日常_活动BONUS_打完_自动_水晶": {
++                            "enabled": false
++                        },
++                        "日常_活动BONUS_打完_挂机_水晶": {
++                            "enabled": false
+                         }
+                     }
+-                }
+-            ],
+-            "default_case": "Yes"
+-        },
+-
+-        "碎水晶": {
+-            "type": "switch",
+-            "label": "体力不足使用水晶补充",
+-            "description": "选项关闭时不进行操作，选项开启时在体力耗尽后自动花费水晶补充体力，继续刷取。",
+-            "cases": [
++                },
+                 {
+-                    "name": "Yes",
++                    "name": "自动战斗+碎水晶",
+                     "pipeline_override": {
+-                        "日常_活动BONUS_打完_自动_水晶": {
+-                            "enabled": true
+-                        },
+-                        "日常_活动BONUS_打完_挂机_水晶": {
+-                            "enabled": true
+-                        },
+                         "日常_活动BONUS_打完_自动": {
+                             "enabled": false
+                         },
+                         "日常_活动BONUS_打完_挂机": {
+                             "enabled": false
++                        },
++                        "日常_活动BONUS_打完_自动_水晶": {
++                            "enabled": true
++                        },
++                        "日常_活动BONUS_打完_挂机_水晶": {
++                            "enabled": false
+                         }
+                     }
+                 },
+                 {
+-                    "name": "No",
++                    "name": "挂机+碎水晶",
+                     "pipeline_override": {
++                        "日常_活动BONUS_打完_自动": {
++                            "enabled": false
++                        },
++                        "日常_活动BONUS_打完_挂机": {
++                            "enabled": false
++                        },
+                         "日常_活动BONUS_打完_自动_水晶": {
+                             "enabled": false
+                         },
+                         "日常_活动BONUS_打完_挂机_水晶": {
+-                            "enabled": false
++                            "enabled": true
+                         }
+                     }
+                 }
+-            ],
+-            "default_case": "No"
++            ]
+         },
+ 
+         "刷取次数": {
+
+
+############ tools/templates.json 差异(仅计数) ############
+683	673	tools/templates.json
+
+
+############ 10_启动.json 差异 ############
+diff --git "a/assets/resource/pipeline/10_\345\220\257\345\212\250.json" "b/assets/resource/pipeline/10_\345\220\257\345\212\250.json"
+index 3ce54dc..4891572 100644
+--- "a/assets/resource/pipeline/10_\345\220\257\345\212\250.json"
++++ "b/assets/resource/pipeline/10_\345\220\257\345\212\250.json"
+@@ -2,44 +2,143 @@
+     "启动游戏": {
+         "action": "StartApp",
+         "package": "com.miHoYo.HSoDv2Original",
+-        "next": ["启动_等主界面", "启动_标题页", "启动_资源下载提示"]
++        "next": [
++            "启动_等主界面",
++            "启动_标题页",
++            "启动_资源下载提示"
++        ]
+     },
+     "启动_资源下载提示": {
+         "recognition": "TemplateMatch",
+         "template": "启动/快给我下.png",
+-        "roi": [380, 400, 520, 120],
++        "roi": [
++            380,
++            400,
++            520,
++            120
++        ],
+         "threshold": 0.8,
+         "action": "Click",
+         "max_hit": 3,
+         "post_delay": 3000,
+-        "next": ["启动_资源下载提示", "启动_标题页", "启动_等主界面"]
++        "next": [
++            "启动_资源下载提示",
++            "启动_标题页",
++            "启动_等主界面"
++        ]
+     },
+     "启动_标题页": {
+         "recognition": "TemplateMatch",
+         "template": "启动/标题页.png",
+-        "roi": [960, 0, 320, 90],
++        "roi": [
++            960,
++            0,
++            320,
++            90
++        ],
+         "threshold": 0.85,
+         "action": "Click",
+-        "target": [580, 620, 120, 100],
++        "target": [
++            580,
++            620,
++            120,
++            100
++        ],
+         "max_hit": 8,
+         "post_delay": 3000,
+-        "next": ["启动_标题页", "启动_等主界面"]
++        "next": [
++            "启动_标题页",
++            "启动_等主界面"
++        ]
+     },
+     "启动_等主界面": {
+         "action": "DoNothing",
+         "max_hit": 60,
+         "post_delay": 3000,
+-        "next": ["通用_等网络连接", "启动_标题页", "启动_资源下载提示", "启动_关弹窗", "日常_每日签到_领取", "日常_卡死_回归赠礼", "主界面_就绪", "启动_等主界面"]
++        "next": [
++            "通用_等网络连接",
++            "启动_标题页",
++            "启动_资源下载提示",
++            "启动_关弹窗",
++            "日常_每日签到_领取",
++            "日常_回归赠礼_关X",
++            "日常_卡死_回归赠礼",
++            "主界面_就绪",
++            "启动_退一步",
++            "启动_回首页",
++            "启动_等主界面"
++        ]
+     },
+     "启动_关弹窗": {
+         "enabled": true,
+         "recognition": "TemplateMatch",
+-        "template": "通用/关闭X.png",
+-        "roi": [1080, 20, 200, 140],
++        "template": [
++            "通用/关闭X.png",
++            "通用/回归赠礼_关闭.png"
++        ],
++        "roi": [
++            930,
++            60,
++            350,
++            230
++        ],
+         "threshold": 0.85,
+         "action": "Click",
+         "post_delay": 1000,
+         "max_hit": 8,
+-        "next": ["启动_关弹窗", "日常_每日签到_领取", "日常_卡死_回归赠礼", "启动_等主界面"]
++        "next": [
++            "启动_关弹窗",
++            "日常_每日签到_领取",
++            "日常_回归赠礼_关X",
++            "日常_卡死_回归赠礼",
++            "启动_等主界面"
++        ]
++    },
++    "启动_退一步": {
++        "enabled": true,
++        "recognition": "TemplateMatch",
++        "template": "通用/返回箭头.png",
++        "roi": [
++            0,
++            0,
++            240,
++            200
++        ],
++        "threshold": 0.85,
++        "action": "Click",
++        "max_hit": 10,
++        "post_delay": 2500,
++        "next": [
++            "主界面_就绪",
++            "启动_关弹窗",
++            "日常_每日签到_领取",
++            "日常_回归赠礼_关X",
++            "日常_卡死_回归赠礼",
++            "启动_退一步",
++            "启动_回首页",
++            "启动_等主界面"
++        ]
++    },
++    "启动_回首页": {
++        "enabled": true,
++        "action": "Click",
++        "target": [
++            620,
++            25,
++            72,
++            70
++        ],
++        "max_hit": 5,
++        "post_delay": 3000,
++        "next": [
++            "主界面_就绪",
++            "启动_关弹窗",
++            "日常_每日签到_领取",
++            "日常_回归赠礼_关X",
++            "日常_卡死_回归赠礼",
++            "启动_退一步",
++            "启动_回首页",
++            "启动_等主界面"
++        ]
+     }
+ }

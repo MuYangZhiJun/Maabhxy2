@@ -1,0 +1,310 @@
+========== gui/config/instances/default.json ==========
+{
+  "CurrentControllerName": "安卓端",
+  "Resource": "官服",
+  "CurrentTasks": [
+    "启动崩坏学园2<|||>启动游戏",
+    "使魔探险<|||>日常_使魔探险_入口",
+    "领取邮件<|||>日常_领取邮件_入口",
+    "商店购物<|||>日常_商店购物_入口",
+    "关卡战斗<|||>关卡战斗_入口",
+    "领取奖励<|||>日常_领取奖励_入口",
+    "重复刷关<|||>日常_重复刷关_入口",
+    "使魔探险<|||>日常_使魔探险_开面板",
+    "领取邮件<|||>日常_邮件",
+    "商店购物<|||>日常_商店",
+    "关卡战斗<|||>日常_开始",
+    "领取奖励<|||>日常_存在感",
+    "重复刷关<|||>日常_活动BONUS",
+    "重复刷关<|||>刷关_开始",
+    "自动战斗（边走边打）<|||>自动战斗",
+    "清日常<|||>日常_开始"
+  ],
+  "TaskItems": [
+    {
+      "name": "启动崩坏学园2",
+      "entry": "启动游戏",
+      "default_check": true,
+      "description": "打开崩坏学园2并自动过掉登录、公告、资源下载提示，停在主界面。跑其它任务前如果游戏没开着，先勾这个。",
+      "option": [
+        {
+          "name": "游戏包名",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "name": "使魔探险",
+      "entry": "日常_使魔探险_入口",
+      "default_check": true,
+      "description": "把正在进行的使魔探险奖励领掉，再把空出来的位置重新派满。建议每天跑一次，不然第二天没有已完成的探险可领。",
+      "option": [
+        {
+          "name": "使魔优先派遣",
+          "index": 0,
+          "selected_cases": [
+            "S 级"
+          ]
+        }
+      ],
+      "pipeline_override": {
+        "日常_使魔探险_开面板": {
+          "enabled": true
+        },
+        "日常_使魔探险_已在页": {
+          "enabled": true
+        },
+        "日常_使魔探险_切页": {
+          "enabled": true
+        },
+        "日常_使魔探险_领取": {
+          "enabled": true
+        },
+        "日常_使魔探险_派遣": {
+          "enabled": true
+        },
+        "日常_派遣_一键派遣": {
+          "enabled": true
+        },
+        "日常_派遣_出发": {
+          "enabled": true
+        },
+        "日常_使魔探险_翻页": {
+          "enabled": true
+        },
+        "日常_使魔探险_收尾": {
+          "enabled": true,
+          "next": [
+            "日常_回主界面"
+          ]
+        }
+      }
+    },
+    {
+      "name": "领取邮件",
+      "entry": "日常_领取邮件_入口",
+      "default_check": false,
+      "description": "进游戏内的消息中心，按你勾的项目处理邮件。",
+      "option": [
+        {
+          "name": "邮件操作",
+          "index": 0,
+          "selected_cases": [
+            "领取附件",
+            "领取体力"
+          ]
+        }
+      ],
+      "pipeline_override": {
+        "日常_邮件": {
+          "enabled": true
+        },
+        "日常_邮件_进消息": {
+          "enabled": true
+        },
+        "日常_邮件_收尾": {
+          "enabled": true,
+          "next": [
+            "日常_回主界面"
+          ]
+        }
+      }
+    },
+    {
+      "name": "商店购物",
+      "entry": "日常_商店购物_入口",
+      "default_check": true,
+      "description": "进礼包商店把当天能白拿的东西买掉（不花水晶）。",
+      "pipeline_override": {
+        "日常_商店": {
+          "enabled": true
+        },
+        "日常_商店_进礼包": {
+          "enabled": true
+        },
+        "日常_商店_切吼美": {
+          "enabled": true
+        },
+        "日常_商店_翻页": {
+          "enabled": true
+        },
+        "日常_商店_购买": {
+          "enabled": true
+        },
+        "日常_商店_确认": {
+          "enabled": true
+        },
+        "日常_商店_确定": {
+          "enabled": true
+        },
+        "日常_商店_收尾": {
+          "enabled": true,
+          "next": [
+            "日常_回主界面"
+          ]
+        }
+      }
+    },
+    {
+      "name": "关卡战斗",
+      "entry": "关卡战斗_入口",
+      "default_check": true,
+      "description": "把选中的关卡跑一遍，一直打到没体力为止，中途体力不够会自动兑换存着的双倍体力。",
+      "option": [
+        {
+          "name": "日常模块",
+          "index": 0,
+          "selected_cases": [
+            "活动 BONUS",
+            "使魔的爱",
+            "虚轴之庭"
+          ]
+        },
+        {
+          "name": "战斗模式",
+          "index": 0
+        },
+        {
+          "name": "使用双倍卷",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "name": "领取奖励",
+      "entry": "日常_领取奖励_入口",
+      "default_check": true,
+      "description": "领每日存在感和每周任务里能领的奖励。",
+      "option": [
+        {
+          "name": "领取奖励项目",
+          "index": 0,
+          "selected_cases": [
+            "每日存在感",
+            "每周任务",
+            "吼姆的礼物"
+          ]
+        }
+      ],
+      "pipeline_override": {
+        "日常_存在感": {
+          "enabled": true
+        },
+        "日常_存在感_收尾": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "name": "关卡战斗",
+      "entry": "关卡战斗_入口",
+      "default_check": true,
+      "description": "把选中的关卡跑一遍，一直打到没体力为止，中途体力不够会自动兑换存着的双倍体力。",
+      "option": [
+        {
+          "name": "日常模块",
+          "index": 0,
+          "selected_cases": [
+            "活动 BONUS"
+          ]
+        },
+        {
+          "name": "战斗模式",
+          "index": 0
+        },
+        {
+          "name": "使用双倍卷",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "name": "重复刷关",
+      "entry": "日常_重复刷关_入口",
+      "default_check": false,
+      "description": "重复刷取BONUS关卡，用于阵营战与赌马活动，默认关闭。",
+      "option": [
+        {
+          "name": "刷取次数",
+          "index": 0,
+          "data": {
+            "次数": "1"
+          }
+        },
+        {
+          "name": "战斗模式",
+          "index": 0
+        },
+        {
+          "name": "使用双倍卷",
+          "index": 0
+        }
+      ],
+      "pipeline_override": {
+        "日常_活动BONUS": {
+          "enabled": true
+        },
+        "日常_活动BONUS_回列表": {
+          "enabled": true
+        },
+        "日常_活动BONUS_进活动": {
+          "enabled": true
+        },
+        "日常_活动BONUS_点左上": {
+          "enabled": true
+        },
+        "日常_活动BONUS_翻页": {
+          "enabled": true
+        },
+        "日常_活动BONUS_点左上2": {
+          "enabled": true
+        },
+        "日常_活动BONUS_选好友": {
+          "enabled": true
+        },
+        "日常_活动BONUS_点好友": {
+          "enabled": true
+        },
+        "日常_活动BONUS_开战": {
+          "enabled": true
+        },
+        "日常_活动BONUS_收尾": {
+          "enabled": true,
+          "next": [
+            "日常_收尾"
+          ]
+        }
+      }
+    }
+  ],
+  "InstanceName": "配置 1",
+  "AdbDevice": {
+    "InfoHandle": {
+      "value": 2588742230704
+    },
+    "Name": "MuMu安卓设备-MuMuPlayer v5+",
+    "AdbPath": "E:/MuMu Player 12/nx_main/adb.exe",
+    "AdbSerial": "127.0.0.1:16384",
+    "ScreencapMethods": 64,
+    "InputMethods": 18446744073709551607,
+    "Config": "{\"extras\":{\"mumu\":{\"enable\":true,\"index\":0,\"path\":\"E:/MuMu Player 12\"}}}",
+    "AgentPath": "./MaaAgentBinary"
+  },
+  "CurrentController": 2,
+  "ResourceOptionItems": {},
+  "BeforeTask": "StartupSoftware"
+}
+
+========== 步骤链 ==========
+关卡战斗_入口 = {"enabled": true, "action": "DoNothing", "next": ["日常_关弹窗", "日常_每日签到_领取", "日常_回归赠礼_关X", "日常_卡死_回归赠礼", "关卡战斗_就绪", "关卡战斗_回首页", "日常_收尾"]}
+关卡战斗_回首页 = {"enabled": true, "action": "Click", "target": [620, 25, 72, 70], "max_hit": 6, "post_delay": 3000, "next": ["关卡战斗_就绪", "关卡战斗_回首页", "关卡战斗_退一步", "日常_收尾"]}
+关卡战斗_就绪 = {"recognition": "TemplateMatch", "template": "通用/主界面.png", "roi": [0, 100, 240, 500], "threshold": 0.62, "action": "DoNothing", "enabled": true, "next": ["日常_开始"]}
+关卡战斗_退一步 = {"enabled": true, "recognition": "TemplateMatch", "template": "通用/返回箭头.png", "roi": [0, 0, 240, 200], "threshold": 0.85, "action": "Click", "max_hit": 10, "post_delay": 3000, "next": ["关卡战斗_就绪", "关卡战斗_回首页", "关卡战斗_退一步", "日常_收尾"]}
+日常_开始 = {"next": ["日常_邮件", "日常_步骤2"]}
+日常_收尾 = {}
+日常_步骤2 = {"next": ["日常_使魔探险_开面板", "日常_步骤3"]}
+日常_步骤3 = {"next": ["日常_商店", "日常_步骤4"]}
+日常_步骤4 = {"next": ["日常_虚轴之庭", "日常_步骤5"]}
+日常_步骤5 = {"next": ["日常_使魔的爱", "日常_步骤6"]}
+日常_步骤6 = {"next": ["日常_活动BONUS", "日常_步骤7"]}
+日常_步骤7 = {"next": ["日常_存在感", "日常_收尾"]}

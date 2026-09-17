@@ -1,0 +1,124 @@
+=== 日常模块 option ===
+type=checkbox default=['活动 BONUS']
+case '虚轴之庭':
+   日常_虚轴之庭 = {"enabled": true}
+   日常_虚轴之庭_回列表 = {"enabled": true}
+   日常_虚轴之庭_翻页 = {"enabled": true}
+   日常_虚轴之庭_进多元 = {"enabled": true}
+   日常_虚轴之庭_点卡 = {"enabled": true}
+   日常_虚轴之庭_点关卡 = {"enabled": true}
+   日常_虚轴之庭_快捷战斗1 = {"enabled": true}
+   日常_虚轴之庭_确定1 = {"enabled": true}
+   日常_虚轴之庭_结算1 = {"enabled": true}
+   日常_虚轴之庭_快捷战斗2 = {"enabled": true}
+   日常_虚轴之庭_确定2 = {"enabled": true}
+   日常_虚轴之庭_结算2 = {"enabled": true}
+   日常_虚轴之庭_快捷战斗3 = {"enabled": true}
+   日常_虚轴之庭_确定3 = {"enabled": true}
+   日常_虚轴之庭_结算3 = {"enabled": true}
+   日常_虚轴之庭_收尾 = {"enabled": true}
+case '使魔的爱':
+   日常_使魔的爱 = {"enabled": true}
+   日常_使魔的爱_回列表 = {"enabled": true}
+   日常_使魔的爱_翻页 = {"enabled": true}
+   日常_使魔的爱_进多元 = {"enabled": true}
+   日常_使魔的爱_点卡 = {"enabled": true}
+   日常_使魔的爱_快捷战斗1 = {"enabled": true}
+   日常_使魔的爱_确定1 = {"enabled": true}
+   日常_使魔的爱_结算1 = {"enabled": true}
+   日常_使魔的爱_快捷战斗2 = {"enabled": true}
+   日常_使魔的爱_确定2 = {"enabled": true}
+   日常_使魔的爱_结算2 = {"enabled": true}
+   日常_使魔的爱_快捷战斗3 = {"enabled": true}
+   日常_使魔的爱_确定3 = {"enabled": true}
+   日常_使魔的爱_结算3 = {"enabled": true}
+   日常_使魔的爱_收尾 = {"enabled": true}
+case '活动 BONUS':
+   日常_活动BONUS = {"enabled": true}
+   日常_活动BONUS_回列表 = {"enabled": true}
+   日常_活动BONUS_进活动 = {"enabled": true}
+   日常_活动BONUS_点左上 = {"enabled": true}
+   日常_活动BONUS_翻页 = {"enabled": true}
+   日常_活动BONUS_点左上2 = {"enabled": true}
+   日常_活动BONUS_选好友 = {"enabled": true}
+   日常_活动BONUS_点好友 = {"enabled": true}
+   日常_活动BONUS_开战 = {"enabled": true}
+   日常_活动BONUS_收尾 = {"enabled": true}
+
+=== 战斗模式 option ===
+case '自动战斗': ['日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_挂机_水晶']
+case '挂机': ['日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_挂机_水晶']
+case '自动战斗+碎水晶': ['日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_挂机_水晶']
+case '挂机+碎水晶': ['日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_挂机_水晶']
+
+=== 节点 enabled ===
+日常_使魔的爱                              enabled=True
+日常_使魔的爱_回列表                          enabled=True
+日常_使魔的爱_开列表                          enabled=True
+日常_使魔的爱_快捷战斗1                        enabled=False
+日常_使魔的爱_快捷战斗2                        enabled=False
+日常_使魔的爱_快捷战斗3                        enabled=False
+日常_使魔的爱_收尾                           enabled=True
+日常_使魔的爱_点卡                           enabled=True
+日常_使魔的爱_确定1                          enabled=False
+日常_使魔的爱_确定2                          enabled=False
+日常_使魔的爱_确定3                          enabled=False
+日常_使魔的爱_结算1                          enabled=False
+日常_使魔的爱_结算2                          enabled=False
+日常_使魔的爱_结算3                          enabled=False
+日常_使魔的爱_翻页                           enabled=True
+日常_使魔的爱_进多元                          enabled=False
+日常_使魔的爱_逃逸                           enabled=True
+日常_步骤2                               enabled=True
+日常_步骤3                               enabled=True
+日常_步骤4                               enabled=True
+日常_步骤5                               enabled=True
+日常_步骤6                               enabled=True
+日常_步骤7                               enabled=True
+日常_活动BONUS                           enabled=False
+日常_活动BONUS_助战就绪                      enabled=True
+日常_活动BONUS_双倍券                       enabled=False
+日常_活动BONUS_回列表                       enabled=False
+日常_活动BONUS_开列表                       enabled=True
+日常_活动BONUS_开战                        enabled=False
+日常_活动BONUS_开战_重试                     enabled=True
+日常_活动BONUS_打完_挂机                     enabled=False
+日常_活动BONUS_打完_挂机_水晶                  enabled=False
+日常_活动BONUS_打完_水晶                     enabled=False
+日常_活动BONUS_打完_自动                     enabled=False
+日常_活动BONUS_打完_自动_水晶                  enabled=False
+日常_活动BONUS_收尾                        enabled=False
+日常_活动BONUS_点好友                       enabled=False
+日常_活动BONUS_点好友_按坐标                   enabled=True
+日常_活动BONUS_点左上                       enabled=False
+日常_活动BONUS_点左上2                      enabled=False
+日常_活动BONUS_翻页                        enabled=False
+日常_活动BONUS_进活动                       enabled=False
+日常_活动BONUS_选好友                       enabled=False
+日常_虚轴之庭                              enabled=True
+日常_虚轴之庭_回列表                          enabled=True
+日常_虚轴之庭_开列表                          enabled=True
+日常_虚轴之庭_快捷战斗1                        enabled=False
+日常_虚轴之庭_快捷战斗2                        enabled=False
+日常_虚轴之庭_快捷战斗3                        enabled=False
+日常_虚轴之庭_收尾                           enabled=True
+日常_虚轴之庭_点关卡                          enabled=True
+日常_虚轴之庭_点卡                           enabled=True
+日常_虚轴之庭_确定1                          enabled=False
+日常_虚轴之庭_确定2                          enabled=False
+日常_虚轴之庭_确定3                          enabled=False
+日常_虚轴之庭_结算1                          enabled=False
+日常_虚轴之庭_结算2                          enabled=False
+日常_虚轴之庭_结算3                          enabled=False
+日常_虚轴之庭_翻页                           enabled=True
+日常_虚轴之庭_进多元                          enabled=False
+日常_虚轴之庭_逃逸                           enabled=True
+
+=== 前3步 日常_步骤 ===
+日常_步骤1: next=None
+日常_步骤2: next=['日常_使魔探险_开面板', '日常_步骤3']
+日常_步骤3: next=['日常_商店', '日常_步骤4']
+日常_步骤4: next=['日常_虚轴之庭', '日常_步骤5']
+日常_步骤5: next=['日常_使魔的爱', '日常_步骤6']
+日常_步骤6: next=['日常_活动BONUS', '日常_步骤7']
+日常_步骤7: next=['日常_存在感', '日常_收尾']

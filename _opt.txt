@@ -1,0 +1,529 @@
+{
+  "邮件操作": {
+    "type": "checkbox",
+    "label": "邮件要做什么",
+    "description": "可多选，默认只领附件和体力。删除已读会把看过的邮件清掉，注意这个不可恢复。",
+    "cases": [
+      {
+        "name": "领取附件",
+        "pipeline_override": {
+          "日常_邮件_领取": {
+            "enabled": true
+          },
+          "日常_邮件_领取_关窗": {
+            "enabled": true
+          },
+          "日常_邮件_领取_关窗_确定": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "领取体力",
+        "pipeline_override": {
+          "日常_邮件_体力": {
+            "enabled": true
+          },
+          "日常_邮件_体力_关窗": {
+            "enabled": true
+          },
+          "日常_邮件_体力_关窗_确定": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "删除已读",
+        "pipeline_override": {
+          "日常_邮件_删除": {
+            "enabled": true
+          },
+          "日常_邮件_删除确认": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "自动读邮件",
+        "pipeline_override": {
+          "日常_邮件_读信_开始": {
+            "enabled": true
+          },
+          "日常_邮件_读信_开1": {
+            "enabled": true
+          },
+          "日常_邮件_读信_关1": {
+            "enabled": true
+          },
+          "日常_邮件_读信_开2": {
+            "enabled": true
+          },
+          "日常_邮件_读信_关2": {
+            "enabled": true
+          },
+          "日常_邮件_读信_开3": {
+            "enabled": true
+          },
+          "日常_邮件_读信_关3": {
+            "enabled": true
+          },
+          "日常_邮件_读信_开4": {
+            "enabled": true
+          },
+          "日常_邮件_读信_关4": {
+            "enabled": true
+          },
+          "日常_邮件_读信_开5": {
+            "enabled": true
+          },
+          "日常_邮件_读信_关5": {
+            "enabled": true
+          },
+          "日常_邮件_读信_开6": {
+            "enabled": true
+          },
+          "日常_邮件_读信_关6": {
+            "enabled": true
+          },
+          "日常_邮件_读信_开7": {
+            "enabled": true
+          },
+          "日常_邮件_读信_关7": {
+            "enabled": true
+          },
+          "日常_邮件_读信_关8": {
+            "enabled": true
+          }
+        }
+      }
+    ],
+    "default_case": [
+      "领取附件",
+      "领取体力"
+    ]
+  },
+  "使魔优先派遣": {
+    "type": "checkbox",
+    "label": "优先派遣哪些等级",
+    "description": "勾上的等级会优先派出去（按 S → A → B → C 的顺序找）。一个都不勾就是看到哪个派哪个。",
+    "cases": [
+      {
+        "name": "S 级",
+        "pipeline_override": {}
+      },
+      {
+        "name": "A 级",
+        "pipeline_override": {}
+      },
+      {
+        "name": "B 级",
+        "pipeline_override": {}
+      },
+      {
+        "name": "C 级",
+        "pipeline_override": {}
+      }
+    ],
+    "default_case": []
+  },
+  "领取奖励项目": {
+    "type": "checkbox",
+    "label": "领哪些",
+    "description": "想领哪个就勾哪个，默认都领。只勾一个的话，程序不会跑去另一个页面。",
+    "cases": [
+      {
+        "name": "每日存在感",
+        "pipeline_override": {
+          "日常_存在感": {
+            "enabled": true
+          },
+          "日常_存在感_切页": {
+            "enabled": true
+          },
+          "日常_存在感_领取": {
+            "enabled": true
+          },
+          "日常_存在感_关窗": {
+            "enabled": true
+          },
+          "日常_存在感_关窗_确定": {
+            "enabled": true
+          },
+          "日常_存在感_收尾": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "每周任务",
+        "pipeline_override": {
+          "日常_每周任务_切页": {
+            "enabled": true
+          },
+          "日常_每周任务_领取": {
+            "enabled": true
+          },
+          "日常_每周任务_关窗": {
+            "enabled": true
+          },
+          "日常_每周任务_关窗_确定": {
+            "enabled": true
+          },
+          "日常_存在感_收尾": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "吼姆的礼物",
+        "pipeline_override": {
+          "日常_吼姆": {
+            "enabled": true
+          },
+          "日常_吼姆_领取": {
+            "enabled": true
+          },
+          "日常_吼姆_关窗": {
+            "enabled": true
+          },
+          "日常_吼姆_关窗_确定": {
+            "enabled": true
+          },
+          "日常_吼姆_收尾": {
+            "enabled": true
+          }
+        }
+      }
+    ],
+    "default_case": [
+      "每日存在感",
+      "每周任务",
+      "吼姆的礼物"
+    ]
+  },
+  "战斗模式": {
+    "type": "select",
+    "label": "战斗模式",
+    "description": "打完一局之后怎么打：自动战斗会用一号位武器并向右走，挂机只等结算。带“+碎水晶”的那两档会在体力耗尽后花水晶补体力继续刷；不带的体力用完就收工（只兑免费双倍体力）。默认自动战斗，不花水晶。",
+    "default_case": "自动战斗",
+    "cases": [
+      {
+        "name": "自动战斗",
+        "pipeline_override": {
+          "日常_活动BONUS_打完_自动": {
+            "enabled": true
+          },
+          "日常_活动BONUS_打完_挂机": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_自动_水晶": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_挂机_水晶": {
+            "enabled": false
+          }
+        }
+      },
+      {
+        "name": "挂机",
+        "pipeline_override": {
+          "日常_活动BONUS_打完_自动": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_挂机": {
+            "enabled": true
+          },
+          "日常_活动BONUS_打完_自动_水晶": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_挂机_水晶": {
+            "enabled": false
+          }
+        }
+      },
+      {
+        "name": "自动战斗+碎水晶",
+        "pipeline_override": {
+          "日常_活动BONUS_打完_自动": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_挂机": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_自动_水晶": {
+            "enabled": true
+          },
+          "日常_活动BONUS_打完_挂机_水晶": {
+            "enabled": false
+          }
+        }
+      },
+      {
+        "name": "挂机+碎水晶",
+        "pipeline_override": {
+          "日常_活动BONUS_打完_自动": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_挂机": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_自动_水晶": {
+            "enabled": false
+          },
+          "日常_活动BONUS_打完_挂机_水晶": {
+            "enabled": true
+          }
+        }
+      }
+    ]
+  },
+  "刷取次数": {
+    "type": "input",
+    "label": "刷取次数",
+    "description": "想刷几轮就填几。一轮 = 打完一局 → 再挑战 → 选好友 → 开战。这个只给「重复刷关」用；「关卡战斗」里的关卡是刷到没体力为止，不用填。",
+    "inputs": [
+      {
+        "name": "次数",
+        "label": "刷几轮",
+        "default": "1",
+        "pipeline_type": "int",
+        "verify": "^[1-9][0-9]*$",
+        "pattern_msg": "填个正整数（1 起）"
+      }
+    ],
+    "pipeline_override": {
+      "日常_活动BONUS_打完_自动": {
+        "custom_action_param": {
+          "duration": 150,
+          "rounds": "{次数}",
+          "auto_fight": true,
+          "use_crystal": false
+        }
+      },
+      "日常_活动BONUS_打完_自动_水晶": {
+        "custom_action_param": {
+          "duration": 150,
+          "rounds": "{次数}",
+          "auto_fight": true,
+          "use_crystal": true
+        }
+      },
+      "日常_活动BONUS_打完_挂机": {
+        "custom_action_param": {
+          "duration": 150,
+          "rounds": "{次数}",
+          "auto_fight": false,
+          "use_crystal": false
+        }
+      },
+      "日常_活动BONUS_打完_挂机_水晶": {
+        "custom_action_param": {
+          "duration": 150,
+          "rounds": "{次数}",
+          "auto_fight": false,
+          "use_crystal": true
+        }
+      }
+    }
+  },
+  "使用双倍卷": {
+    "type": "switch",
+    "label": "使用双倍卷",
+    "description": "选项关闭时不进行操作，选项开启时自动勾选BONUS关卡中的双倍券。",
+    "cases": [
+      {
+        "name": "Yes",
+        "pipeline_override": {
+          "日常_活动BONUS_双倍券": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "No",
+        "pipeline_override": {}
+      }
+    ],
+    "default_case": "No"
+  },
+  "游戏包名": {
+    "type": "select",
+    "label": "游戏包名",
+    "description": "选你玩的服务器。官服是已经核实过的；玩 B 服或日服的话得自己改成对应的包名。",
+    "default_case": "官服",
+    "cases": [
+      {
+        "name": "官服",
+        "pipeline_override": {
+          "启动游戏": {
+            "package": "com.miHoYo.HSoDv2Original"
+          }
+        }
+      },
+      {
+        "name": "B服",
+        "pipeline_override": {
+          "启动游戏": {
+            "package": "com.miHoYo.HSoDv2.bilibili"
+          }
+        }
+      },
+      {
+        "name": "日服 / 国际服",
+        "pipeline_override": {
+          "启动游戏": {
+            "package": "com.miHoYo.HSoDv2"
+          }
+        }
+      }
+    ]
+  },
+  "日常模块": {
+    "type": "checkbox",
+    "label": "打哪些（默认只打活动 BONUS）",
+    "description": "选这个任务要打哪些关卡。默认只打活动 BONUS。",
+    "cases": [
+      {
+        "name": "虚轴之庭",
+        "pipeline_override": {
+          "日常_虚轴之庭": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_回列表": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_翻页": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_进多元": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_点卡": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_点关卡": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_快捷战斗1": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_确定1": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_结算1": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_快捷战斗2": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_确定2": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_结算2": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_快捷战斗3": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_确定3": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_结算3": {
+            "enabled": true
+          },
+          "日常_虚轴之庭_收尾": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "使魔的爱",
+        "pipeline_override": {
+          "日常_使魔的爱": {
+            "enabled": true
+          },
+          "日常_使魔的爱_回列表": {
+            "enabled": true
+          },
+          "日常_使魔的爱_翻页": {
+            "enabled": true
+          },
+          "日常_使魔的爱_进多元": {
+            "enabled": true
+          },
+          "日常_使魔的爱_点卡": {
+            "enabled": true
+          },
+          "日常_使魔的爱_快捷战斗1": {
+            "enabled": true
+          },
+          "日常_使魔的爱_确定1": {
+            "enabled": true
+          },
+          "日常_使魔的爱_结算1": {
+            "enabled": true
+          },
+          "日常_使魔的爱_快捷战斗2": {
+            "enabled": true
+          },
+          "日常_使魔的爱_确定2": {
+            "enabled": true
+          },
+          "日常_使魔的爱_结算2": {
+            "enabled": true
+          },
+          "日常_使魔的爱_快捷战斗3": {
+            "enabled": true
+          },
+          "日常_使魔的爱_确定3": {
+            "enabled": true
+          },
+          "日常_使魔的爱_结算3": {
+            "enabled": true
+          },
+          "日常_使魔的爱_收尾": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "活动 BONUS",
+        "pipeline_override": {
+          "日常_活动BONUS": {
+            "enabled": true
+          },
+          "日常_活动BONUS_回列表": {
+            "enabled": true
+          },
+          "日常_活动BONUS_进活动": {
+            "enabled": true
+          },
+          "日常_活动BONUS_点左上": {
+            "enabled": true
+          },
+          "日常_活动BONUS_翻页": {
+            "enabled": true
+          },
+          "日常_活动BONUS_点左上2": {
+            "enabled": true
+          },
+          "日常_活动BONUS_选好友": {
+            "enabled": true
+          },
+          "日常_活动BONUS_点好友": {
+            "enabled": true
+          },
+          "日常_活动BONUS_开战": {
+            "enabled": true
+          },
+          "日常_活动BONUS_收尾": {
+            "enabled": true
+          }
+        }
+      }
+    ],
+    "default_case": [
+      "活动 BONUS"
+    ]
+  }
+}

@@ -45,6 +45,12 @@
         "reentry_limit": 3,
         "fail_shot_limit": 3,
 
+        "//trap": "「回归赠礼」死胡同页的标题。找 BONUS 入口的过程本身会点「首页/战斗/右上角活动名」，而主界面右上角那块正好是回归赠礼横幅 —— 点中了就进死胡同（实测 18:39 那次的 bonus_entry_fail 现场图正是这一页），所以 agent 自己也得会自救：认到就 post_stop_app + post_start_app 重启游戏。",
+        "trap_template": "日常/回归赠礼.png",
+        "trap_roi": [400, 100, 700, 160],
+        "package": "com.miHoYo.HSoDv2Original",
+        "relaunch_wait": 25.0,
+
         "rechallenge_button": [638, 613],
         "support_slot": [462, 264],
         "start_button": [879, 659],

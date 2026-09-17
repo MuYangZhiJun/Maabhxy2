@@ -1,0 +1,45 @@
+version=0.1.6
+option 类型=dict  keys=['邮件操作', '使魔优先派遣', '领取奖励项目', '自动模式', '碎水晶', '刷取次数', '使用双倍卷', '游戏包名', '日常模块']
+
+### TASKS
+  启动崩坏学园2 | entry=启动游戏 | option=['游戏包名']
+  使魔探险 | entry=日常_使魔探险_入口 | option=['使魔优先派遣']
+  商店购物 | entry=日常_商店购物_入口 | option=None
+  关卡战斗 | entry=关卡战斗_入口 | option=['日常模块', '自动模式', '使用双倍卷']
+  领取奖励 | entry=日常_领取奖励_入口 | option=['领取奖励项目']
+  领取邮件 | entry=日常_领取邮件_入口 | option=['邮件操作']
+  重复刷关 | entry=日常_重复刷关_入口 | option=['刷取次数', '自动模式', '使用双倍卷', '碎水晶']
+
+### OPTION 结构
+邮件操作 | type=checkbox | default=['领取附件', '领取体力'] | cases=4
+    case 领取附件           | override 2 项: 日常_邮件_领取,日常_邮件_领取_关窗
+    case 领取体力           | override 2 项: 日常_邮件_体力,日常_邮件_体力_关窗
+    case 删除已读           | override 2 项: 日常_邮件_删除,日常_邮件_删除确认
+    case 自动读邮件          | override 16 项: 日常_邮件_读信_开始,日常_邮件_读信_开1,日常_邮件_读信_关1,日常_邮件_读信_开2,日常_邮件_读信_关2,日常_邮件_读信_开3,日常_邮件_读信_关3,日常_邮件_读信_开4
+使魔优先派遣 | type=checkbox | default=None | cases=4
+    case S 级            | override 0 项: 
+    case A 级            | override 0 项: 
+    case B 级            | override 0 项: 
+    case C 级            | override 0 项: 
+领取奖励项目 | type=checkbox | default=['每日存在感', '每周任务', '吼姆的礼物'] | cases=3
+    case 每日存在感          | override 5 项: 日常_存在感,日常_存在感_切页,日常_存在感_领取,日常_存在感_关窗,日常_存在感_收尾
+    case 每周任务           | override 4 项: 日常_每周任务_切页,日常_每周任务_领取,日常_每周任务_关窗,日常_存在感_收尾
+    case 吼姆的礼物          | override 4 项: 日常_吼姆,日常_吼姆_领取,日常_吼姆_关窗,日常_吼姆_收尾
+自动模式 | type=switch | default=Yes | cases=2
+    case Yes            | override 1 项: 日常_活动BONUS_打完_自动
+    case No             | override 1 项: 日常_活动BONUS_打完_挂机
+碎水晶 | type=switch | default=No | cases=2
+    case Yes            | override 4 项: 日常_活动BONUS_打完_自动_水晶,日常_活动BONUS_打完_挂机_水晶,日常_活动BONUS_打完_自动,日常_活动BONUS_打完_挂机
+    case No             | override 2 项: 日常_活动BONUS_打完_自动_水晶,日常_活动BONUS_打完_挂机_水晶
+刷取次数 | type=input | default=None | cases=NoneType
+使用双倍卷 | type=switch | default=No | cases=2
+    case Yes            | override 1 项: 日常_活动BONUS_双倍券
+    case No             | override 0 项: 
+游戏包名 | type=select | default=官服 | cases=3
+    case 官服             | override 1 项: 启动游戏
+    case B服             | override 1 项: 启动游戏
+    case 日服 / 国际服       | override 1 项: 启动游戏
+日常模块 | type=checkbox | default=['活动 BONUS'] | cases=3
+    case 虚轴之庭           | override 16 项: 日常_虚轴之庭,日常_虚轴之庭_回列表,日常_虚轴之庭_翻页,日常_虚轴之庭_进多元,日常_虚轴之庭_点卡,日常_虚轴之庭_点关卡,日常_虚轴之庭_快捷战斗1,日常_虚轴之庭_确定1
+    case 使魔的爱           | override 15 项: 日常_使魔的爱,日常_使魔的爱_回列表,日常_使魔的爱_翻页,日常_使魔的爱_进多元,日常_使魔的爱_点卡,日常_使魔的爱_快捷战斗1,日常_使魔的爱_确定1,日常_使魔的爱_结算1
+    case 活动 BONUS       | override 10 项: 日常_活动BONUS,日常_活动BONUS_回列表,日常_活动BONUS_进活动,日常_活动BONUS_点左上,日常_活动BONUS_翻页,日常_活动BONUS_点左上2,日常_活动BONUS_选好友,日常_活动BONUS_点好友

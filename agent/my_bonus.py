@@ -106,6 +106,12 @@ _DEFAULTS = {
     # 唯一的出路是**重启游戏**。所以这里配了包名和一键重启。
     "package": "com.miHoYo.HSoDv2Original",
     "relaunch_wait": 25.0,
+    # 「回归赠礼」死胡同页的标题（和 pipeline 的 `日常_卡死_回归赠礼` 用同一张图）。
+    # ⚠️ 为什么要写进 agent：`bonus_enter` 自己也会点「首页/战斗/右上角活动名」，
+    # 这些点击**有可能把这页点出来**（主界面右上角那块就是回归赠礼横幅）——
+    # 实测 18:39 那次 `bonus_entry_fail` 的现场图正是这一页。所以它也要会自救。
+    "trap_template": "日常/回归赠礼.png",
+    "trap_roi": [400, 100, 700, 160],
     # 活动列表页的判据：这两张在列表页上都是 1.0000，在活动地图页上没有
     "act_card_templates": ["日常/活动_难度B.png", "日常/活动_剩余时间.png"],
     "act_card_roi": [130, 100, 1150, 620],
@@ -524,6 +530,8 @@ class BonusEnterAction(CustomAction):
 
         if self._find_entry(ctl, cfg, "开局就在"):
             return True
+        if self._trap(ctl, cfg, "开局就在"):
+            return True
 
         # 在活动列表页 → 点活动卡片进去
         if self._click_activity_card(ctl, cfg):
@@ -538,6 +546,8 @@ class BonusEnterAction(CustomAction):
         ctl.click(cfg["nav_battle"], 4.0, "战斗导航")
         if self._find_entry(ctl, cfg, "回到战斗分区后"):
             return True
+        if self._trap(ctl, cfg, "回到战斗分区后"):
+            return True
         if self._click_activity_card(ctl, cfg):
             if self._find_entry(ctl, cfg, "回到战斗分区并点卡片后"):
                 return True
@@ -551,6 +561,9 @@ class BonusEnterAction(CustomAction):
             ctl.click(cfg["up_button"], 3.0, "活动名（往上一层）")
             if self._find_entry(ctl, cfg, f"上翻 {i + 1} 层后"):
                 return True
+            # 上翻那一下也可能正好点在「回归赠礼」横幅上 —— 那就得重启游戏自救
+            if self._trap(ctl, cfg, f"上翻 {i + 1} 层后"):
+                return True
             if self._click_activity_card(ctl, cfg):
                 if self._find_entry(ctl, cfg, f"上翻 {i + 1} 层并点卡片后"):
                     return True
@@ -560,6 +573,29 @@ class BonusEnterAction(CustomAction):
         return True
 
     # ---- 内部小步骤 ----
+
+    @staticmethod
+    def _trap(ctl, cfg, where=""):
+        """是不是卡在「回归赠礼」那个死胡同页上了？是就重启游戏。返回 True 表示确实卡住了。
+
+        ⚠️ 为什么这条得写在 agent 里：找入口的过程本身会点「首页/战斗/右上角活动名」，
+        而主界面右上角那块正好是**回归赠礼横幅** —— 点中了就进死胡同。
+        实测 18:39 那次的 `bonus_entry_fail` 现场图就是这一页，链子只能存图收场。
+        """
+        if not ctl.has(cfg["trap_template"], cfg["trap_roi"]):
+            return False
+        print(f"[bonus] {where}发现卡在「回归赠礼」死胡同页上 —— 这页没有出口，重启游戏")
+        try:
+            ctl.controller.post_stop_app(cfg["package"]).wait()
+            time.sleep(3.0)
+            ctl.controller.post_start_app(cfg["package"]).wait()
+        except Exception as exc:  # noqa: BLE001
+            print(f"[bonus] 重启游戏失败: {exc}")
+            ctl.save_shot("bonus_trap_relaunch_fail")
+            return True
+        time.sleep(float(cfg["relaunch_wait"]))
+        ctl.save_shot("bonus_trap_relaunched")
+        return True
 
     @staticmethod
     def _on_detail(ctl, cfg):

@@ -1,0 +1,60 @@
+### 日常模块 type=checkbox default=['活动 BONUS']
+-- case 虚轴之庭
+     日常_虚轴之庭                                      {"enabled": true}
+     日常_虚轴之庭_回列表                                  {"enabled": true}
+     日常_虚轴之庭_翻页                                   {"enabled": true}
+     日常_虚轴之庭_进多元                                  {"enabled": true}
+     日常_虚轴之庭_点卡                                   {"enabled": true}
+     日常_虚轴之庭_点关卡                                  {"enabled": true}
+     日常_虚轴之庭_快捷战斗1                                {"enabled": true}
+     日常_虚轴之庭_确定1                                  {"enabled": true}
+     日常_虚轴之庭_结算1                                  {"enabled": true}
+     日常_虚轴之庭_快捷战斗2                                {"enabled": true}
+     日常_虚轴之庭_确定2                                  {"enabled": true}
+     日常_虚轴之庭_结算2                                  {"enabled": true}
+     日常_虚轴之庭_快捷战斗3                                {"enabled": true}
+     日常_虚轴之庭_确定3                                  {"enabled": true}
+     日常_虚轴之庭_结算3                                  {"enabled": true}
+     日常_虚轴之庭_收尾                                   {"enabled": true}
+-- case 使魔的爱
+     日常_使魔的爱                                      {"enabled": true}
+     日常_使魔的爱_回列表                                  {"enabled": true}
+     日常_使魔的爱_翻页                                   {"enabled": true}
+     日常_使魔的爱_进多元                                  {"enabled": true}
+     日常_使魔的爱_点卡                                   {"enabled": true}
+     日常_使魔的爱_快捷战斗1                                {"enabled": true}
+     日常_使魔的爱_确定1                                  {"enabled": true}
+     日常_使魔的爱_结算1                                  {"enabled": true}
+     日常_使魔的爱_快捷战斗2                                {"enabled": true}
+     日常_使魔的爱_确定2                                  {"enabled": true}
+     日常_使魔的爱_结算2                                  {"enabled": true}
+     日常_使魔的爱_快捷战斗3                                {"enabled": true}
+     日常_使魔的爱_确定3                                  {"enabled": true}
+     日常_使魔的爱_结算3                                  {"enabled": true}
+     日常_使魔的爱_收尾                                   {"enabled": true}
+-- case 活动 BONUS
+     日常_活动BONUS                                   {"enabled": true}
+     日常_活动BONUS_回列表                               {"enabled": true}
+     日常_活动BONUS_进活动                               {"enabled": true}
+     日常_活动BONUS_点左上                               {"enabled": true}
+     日常_活动BONUS_翻页                                {"enabled": true}
+     日常_活动BONUS_点左上2                              {"enabled": true}
+     日常_活动BONUS_选好友                               {"enabled": true}
+     日常_活动BONUS_点好友                               {"enabled": true}
+     日常_活动BONUS_开战                                {"enabled": true}
+     日常_活动BONUS_收尾                                {"enabled": true}
+
+### 战斗模式 type=select default=自动战斗
+-- case 自动战斗 -> ['日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_挂机_水晶']
+-- case 挂机 -> ['日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_挂机_水晶']
+-- case 自动战斗+碎水晶 -> ['日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_挂机_水晶']
+-- case 挂机+碎水晶 -> ['日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_挂机_水晶']
+
+### 任务
+启动崩坏学园2 entry=启动游戏 option=['游戏包名']
+使魔探险 entry=日常_使魔探险_入口 option=['使魔优先派遣']
+商店购物 entry=日常_商店购物_入口 option=None
+关卡战斗 entry=关卡战斗_入口 option=['日常模块', '战斗模式', '使用双倍卷']
+领取奖励 entry=日常_领取奖励_入口 option=['领取奖励项目']
+领取邮件 entry=日常_领取邮件_入口 option=['邮件操作']
+重复刷关 entry=日常_重复刷关_入口 option=['刷取次数', '战斗模式', '使用双倍卷']

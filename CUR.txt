@@ -1,0 +1,93 @@
+### 30_清日常 节点数 147
+
+### 三模块 next ###
+日常_虚轴之庭                  en=False ca=None           tmpl=通用/主界面.png
+      next=['日常_虚轴之庭_进多元', '日常_虚轴之庭_回列表', '日常_虚轴之庭_翻页', '日常_虚轴之庭_开列表', '日常_虚轴之庭', '日常_虚轴之庭_收尾', '日常_虚轴之庭_逃逸']
+日常_使魔的爱                  en=False ca=None           tmpl=通用/主界面.png
+      next=['日常_使魔的爱_进多元', '日常_使魔的爱_回列表', '日常_使魔的爱_翻页', '日常_使魔的爱_开列表', '日常_使魔的爱', '日常_使魔的爱_收尾', '日常_使魔的爱_逃逸']
+日常_活动BONUS               en=False ca=bonus_enter    tmpl=None
+      next=['日常_活动BONUS_双倍券', '日常_活动BONUS_选好友', '日常_活动BONUS_翻页', '日常_活动BONUS_收尾']
+日常_虚轴之庭_收尾               en=False ca=None           tmpl=None
+      next=['日常_步骤5']
+日常_使魔的爱_收尾               en=False ca=None           tmpl=None
+      next=['日常_步骤6']
+日常_活动BONUS_收尾            en=False ca=None           tmpl=None
+      next=['日常_步骤7']
+
+### 步骤链 ###
+关卡战斗_入口 = {"enabled": true, "action": "DoNothing", "next": ["日常_关弹窗", "日常_每日签到_领取", "日常_卡死_回归赠礼", "关卡战斗_就绪", "关卡战斗_回首页", "日常_收尾"]}
+关卡战斗_回首页 = {"enabled": true, "action": "Click", "target": [620, 25, 72, 70], "max_hit": 6, "post_delay": 3000, "next": ["关卡战斗_就绪", "关卡战斗_回首页", "关卡战斗_退一步", "日常_收尾"]}
+关卡战斗_就绪 = {"recognition": "TemplateMatch", "template": "通用/主界面.png", "roi": [0, 100, 240, 500], "threshold": 0.62, "action": "DoNothing", "enabled": true, "next": ["日常_开始"]}
+关卡战斗_退一步 = {"enabled": true, "recognition": "TemplateMatch", "template": "通用/返回箭头.png", "roi": [0, 0, 240, 200], "threshold": 0.85, "action": "Click", "max_hit": 10, "post_delay": 3000, "next": ["关卡战斗_就绪", "关卡战斗_回首页", "关卡战斗_退一步", "日常_收尾"]}
+日常_开始 = {"next": ["日常_邮件", "日常_步骤2"]}
+日常_收尾 = {}
+日常_步骤2 = {"next": ["日常_使魔探险_开面板", "日常_步骤3"]}
+日常_步骤3 = {"next": ["日常_商店", "日常_步骤4"]}
+日常_步骤4 = {"next": ["日常_虚轴之庭", "日常_步骤5"]}
+日常_步骤5 = {"next": ["日常_使魔的爱", "日常_步骤6"]}
+日常_步骤6 = {"next": ["日常_活动BONUS", "日常_步骤7"]}
+日常_步骤7 = {"next": ["日常_存在感", "日常_收尾"]}
+
+### 快捷战斗/开战/选好友/打完 节点 enabled ###
+日常_使魔的爱_快捷战斗1                      en=False ca=None           next=['日常_使魔的爱_确定1', '日常_使魔的爱_收尾']
+日常_使魔的爱_快捷战斗2                      en=False ca=None           next=['日常_使魔的爱_确定2', '日常_使魔的爱_收尾']
+日常_使魔的爱_快捷战斗3                      en=False ca=None           next=['日常_使魔的爱_确定3', '日常_使魔的爱_收尾']
+日常_使魔的爱_结算1                        en=False ca=None           next=['日常_使魔的爱_快捷战斗2', '日常_使魔的爱_收尾']
+日常_使魔的爱_结算2                        en=False ca=None           next=['日常_使魔的爱_快捷战斗3', '日常_使魔的爱_收尾']
+日常_使魔的爱_结算3                        en=False ca=None           next=['日常_使魔的爱_收尾']
+日常_开战                              en=False ca=None           next=['自动战斗_打到结束']
+日常_活动BONUS_助战就绪                    en=True  ca=None           next=['日常_活动BONUS_开战', '日常_活动BONUS_收尾']
+日常_活动BONUS_开战                      en=False ca=None           next=['日常_活动BONUS_打完_自动_水晶', '日常_活动BONUS_打完_自动', '日常_活动BONUS_打完_挂机_水晶', '日常_活动BONUS_打完_挂机', '日常_活动BONUS_收尾']
+日常_活动BONUS_开战_重试                   en=True  ca=None           next=['日常_活动BONUS_开战', '日常_活动BONUS_收尾']
+日常_活动BONUS_打完_挂机                   en=False ca=bonus_battle   next=['日常_活动BONUS_收尾']
+日常_活动BONUS_打完_挂机_水晶                en=False ca=bonus_battle   next=['日常_活动BONUS_收尾']
+日常_活动BONUS_打完_水晶                   en=False ca=bonus_battle   next=['日常_活动BONUS_收尾']
+日常_活动BONUS_打完_自动                   en=False ca=bonus_battle   next=['日常_活动BONUS_收尾']
+日常_活动BONUS_打完_自动_水晶                en=False ca=bonus_battle   next=['日常_活动BONUS_收尾']
+日常_活动BONUS_选好友                     en=False ca=None           next=['日常_活动BONUS_点好友', '日常_活动BONUS_点好友_按坐标', '日常_活动BONUS_收尾']
+日常_虚轴之庭_快捷战斗1                      en=False ca=None           next=['日常_虚轴之庭_确定1', '日常_虚轴之庭_收尾']
+日常_虚轴之庭_快捷战斗2                      en=False ca=None           next=['日常_虚轴之庭_确定2', '日常_虚轴之庭_收尾']
+日常_虚轴之庭_快捷战斗3                      en=False ca=None           next=['日常_虚轴之庭_确定3', '日常_虚轴之庭_收尾']
+日常_虚轴之庭_结算1                        en=False ca=None           next=['日常_虚轴之庭_快捷战斗2', '日常_虚轴之庭_收尾']
+日常_虚轴之庭_结算2                        en=False ca=None           next=['日常_虚轴之庭_快捷战斗3', '日常_虚轴之庭_收尾']
+日常_虚轴之庭_结算3                        en=False ca=None           next=['日常_虚轴之庭_收尾']
+
+### 回归赠礼/关弹窗/签到/存在感 相关 ###
+日常_关弹窗                             en=True  tmpl=通用/关闭X.png thr=0.85 tgt=None next=['日常_关弹窗', '日常_每日签到_领取', '日常_卡死_回归赠礼', '日常_开始']
+日常_卡死_回归赠礼                         en=True  tmpl=日常/回归赠礼.png thr=0.85 tgt=None next=['启动_等主界面', '日常_开始']
+日常_吼姆                              en=False tmpl=通用/主界面.png thr=0.62 tgt=[22, 307, 60, 60] next=['日常_吼姆_领取', '日常_吼姆', '日常_吼姆_收尾']
+日常_吼姆_关窗                           en=False tmpl=日常/已领取奖励.png thr=0.85 tgt=[40, 590, 60, 60] next=['日常_吼姆_关窗', '日常_吼姆_关窗_确定', '日常_吼姆_收尾']
+日常_吼姆_关窗_确定                        en=False tmpl=日常/奖励领取_确定.png thr=0.95 tgt=None next=['日常_吼姆_关窗_确定', '日常_吼姆_关窗', '日常_吼姆_收尾']
+日常_吼姆_收尾                           en=False tmpl=通用/返回箭头.png thr=0.85 tgt=None next=['日常_吼姆_收尾', '日常_收尾']
+日常_吼姆_领取                           en=False tmpl=日常/吼姆_一键领取.png thr=0.9 tgt=None next=['日常_吼姆_关窗', '日常_吼姆_关窗_确定', '日常_吼姆_收尾']
+日常_存在感                             en=False tmpl=通用/主界面.png thr=0.62 tgt=[15, 123, 60, 60] next=['日常_存在感_切页', '日常_存在感_领取', '日常_每周任务_切页', '日常_每周任务_领取', '日常_存在感', '日常_存在感_收尾']
+日常_存在感_关窗                          en=False tmpl=日常/已领取奖励.png thr=0.85 tgt=[40, 590, 60, 60] next=['日常_存在感_关窗', '日常_存在感_关窗_确定', '日常_每周任务_切页', '日常_存在感_收尾']
+日常_存在感_关窗_确定                       en=False tmpl=日常/奖励领取_确定.png thr=0.95 tgt=None next=['日常_存在感_关窗_确定', '日常_存在感_关窗', '日常_每周任务_切页', '日常_存在感_收尾']
+日常_存在感_切页                          en=False tmpl=日常/任务_存在感_未选.png thr=0.85 tgt=None next=['日常_存在感_领取', '日常_存在感_收尾']
+日常_存在感_收尾                          en=False tmpl=通用/返回箭头.png thr=0.85 tgt=None next=['日常_存在感_收尾', '日常_吼姆', '日常_收尾']
+日常_存在感_领取                          en=False tmpl=日常/一键领取_任务.png thr=0.85 tgt=None next=['日常_存在感_关窗', '日常_存在感_关窗_确定', '日常_每周任务_切页', '日常_存在感_收尾']
+日常_每周任务_关窗                         en=False tmpl=日常/已领取奖励.png thr=0.85 tgt=[40, 590, 60, 60] next=['日常_每周任务_关窗', '日常_每周任务_关窗_确定', '日常_存在感_收尾']
+日常_每周任务_关窗_确定                      en=False tmpl=日常/奖励领取_确定.png thr=0.95 tgt=None next=['日常_每周任务_关窗_确定', '日常_每周任务_关窗', '日常_存在感_收尾']
+日常_每周任务_切页                         en=False tmpl=日常/任务_每周任务.png thr=0.85 tgt=None next=['日常_每周任务_领取', '日常_存在感_收尾']
+日常_每周任务_领取                         en=False tmpl=日常/一键领取_任务.png thr=0.85 tgt=None next=['日常_每周任务_关窗', '日常_每周任务_关窗_确定', '日常_存在感_收尾']
+日常_每日签到_领取                         en=True  tmpl=日常/每日签到_领取.png thr=0.85 tgt=None next=['日常_每日签到_领取', '日常_卡死_回归赠礼', '日常_关弹窗', '日常_开始']
+
+### 使魔探险/派遣 ###
+日常_使魔探险_入口                         en=True  tmpl=None thr=None tgt=None next=['日常_关弹窗', '日常_每日签到_领取', '日常_卡死_回归赠礼', '日常_使魔探险_开面板', '日常_使魔探险_回首页', '日常_收尾']
+日常_使魔探险_切页                         en=False tmpl=日常/任务_使魔探险.png thr=0.85 tgt=None next=['日常_使魔探险_已在页', '日常_使魔探险_切页', '日常_使魔探险_收尾', '日常_步骤3']
+日常_使魔探险_回首页                        en=True  tmpl=None thr=None tgt=[620, 25, 72, 70] next=['日常_使魔探险_开面板', '日常_使魔探险_回首页', '日常_使魔探险_退一步', '日常_收尾']
+日常_使魔探险_已在页                        en=False tmpl=日常/任务_使魔探险_选中.png thr=0.85 tgt=None next=['日常_使魔探险_领取', '日常_使魔探险_派遣', '日常_使魔探险_翻页', '日常_使魔探险_收尾']
+日常_使魔探险_开面板                        en=False tmpl=通用/主界面.png thr=0.62 tgt=[15, 123, 60, 60] next=['日常_使魔探险_已在页', '日常_使魔探险_切页', '日常_使魔探险_开面板', '日常_使魔探险_收尾', '日常_步骤3']
+日常_使魔探险_收尾                         en=False tmpl=通用/返回箭头.png thr=0.85 tgt=None next=['日常_使魔探险_收尾', '日常_步骤3']
+日常_使魔探险_派遣                         en=False tmpl=日常/使魔探险_选择使魔.png thr=0.85 tgt=None next=['日常_派遣_一键派遣', '日常_派遣_出发', '日常_派遣_等一拍', '日常_使魔探险_收尾']
+日常_使魔探险_翻页                         en=False tmpl=日常/任务_使魔探险_选中.png thr=0.85 tgt=None next=['日常_使魔探险_领取', '日常_使魔探险_派遣', '日常_使魔探险_收尾']
+日常_使魔探险_退一步                        en=True  tmpl=通用/返回箭头.png thr=0.85 tgt=None next=['日常_使魔探险_开面板', '日常_使魔探险_回首页', '日常_使魔探险_退一步', '日常_收尾']
+日常_使魔探险_领取                         en=False tmpl=['日常/使魔探险_S.png', '日常/使魔探险_A.png', '日常/使魔探险_C.png'] thr=0.85 tgt=None next=['日常_使魔探险_领取', '日常_使魔探险_派遣', '日常_使魔探险_翻页', '日常_使魔探险_收尾']
+日常_派遣_一键派遣                         en=False tmpl=日常/一键派遣.png thr=0.85 tgt=None next=['日常_派遣_出发', '日常_使魔探险_收尾']
+日常_派遣_出发                           en=False tmpl=日常/出发.png thr=0.85 tgt=None next=['日常_使魔探险_领取', '日常_使魔探险_派遣', '日常_使魔探险_翻页', '日常_使魔探险_收尾']
+日常_派遣_等一拍                          en=True  tmpl=None thr=None tgt=None next=['日常_派遣_一键派遣', '日常_派遣_出发', '日常_使魔探险_收尾']
+
+### 图片模板 ###
+[日常] BONUS详情标题.png | 一键派遣.png | 一键领取.png | 一键领取_任务.png | 任务_使魔探险.png | 任务_使魔探险_选中.png | 任务_存在感.png | 任务_存在感_未选.png | 任务_每周任务.png | 体力领取.png | 使用双倍券.png | 使魔探险_A.png | 使魔探险_C.png | 使魔探险_S.png | 使魔探险_选择使魔.png | 使魔的爱.png | 使魔的爱_卡片.png | 使魔的爱_文字.png | 兑换双倍体力.png | 再次挑战.png | 出击.png | 出发.png | 助战_备用装备.png | 吼姆_一键领取.png | 吼美礼包.png | 回归赠礼.png | 备用装备加成.png | 多元裂缝.png | 奖励领取_确定.png | 崩坏之塔.png | 已领取奖励.png | 开战.png | 快捷战斗.png | 快捷战斗确定.png | 我的消息.png | 战斗结算.png | 每日签到_领取.png | 活动_BONUS.png | 活动_剩余时间.png | 活动_翻页.png | 活动_难度B.png | 礼包商店.png | 结算确定.png | 虚轴之庭.png | 虚轴之庭_关卡入口.png | 补充体力.png | 购买确认.png | 选择助战好友.png | 邮件_一键删除.png | 零时馈礼.png
+[通用] 主界面.png | 关闭X.png | 回归赠礼_关闭.png | 确定.png | 网络连接中.png | 返回箭头.png
+[启动] 快给我下.png | 标题页.png

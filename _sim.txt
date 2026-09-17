@@ -1,0 +1,68 @@
+入口: 关卡战斗_入口
+
+关卡战斗_入口  [DoNothing]
+  日常_关弹窗  [Click] tmpl=['通用/关闭X.png', '通用/回归赠礼_关闭.png']
+  日常_每日签到_领取  [Click] tmpl=日常/每日签到_领取.png
+  日常_回归赠礼_关X  [Click] tmpl=通用/回归赠礼_关闭.png
+  日常_卡死_回归赠礼  [Custom/escape_event_trap] tmpl=日常/回归赠礼.png
+  关卡战斗_就绪  [DoNothing] tmpl=通用/主界面.png
+  关卡战斗_回首页  [Click]
+  日常_收尾  []
+    日常_开始  []
+    启动_等主界面  [DoNothing]
+    关卡战斗_退一步  [Click] tmpl=通用/返回箭头.png
+      日常_邮件  [Click]  ❌disabled tmpl=通用/主界面.png
+      日常_步骤2  []
+      通用_等网络连接  [DoNothing] tmpl=通用/网络连接中.png
+      启动_标题页  [Click] tmpl=启动/标题页.png
+      启动_资源下载提示  [Click] tmpl=启动/快给我下.png
+      启动_关弹窗  [Click] tmpl=['通用/关闭X.png', '通用/回归赠礼_关闭.png']
+      主界面_就绪  [DoNothing] tmpl=通用/主界面.png
+      启动_退一步  [Click] tmpl=通用/返回箭头.png
+      启动_回首页  [Click]
+        日常_使魔探险_开面板  [Click]  ❌disabled tmpl=通用/主界面.png
+        日常_步骤3  []
+          日常_商店  [Click]  ❌disabled tmpl=通用/主界面.png
+          日常_步骤4  []
+            日常_虚轴之庭  [Click] tmpl=通用/主界面.png
+            日常_步骤5  []
+
+=== 关键节点 enabled 状态 ===
+  ON  日常_使魔的爱_快捷战斗1
+  ON  日常_使魔的爱_快捷战斗2
+  ON  日常_使魔的爱_快捷战斗3
+  ON  日常_使魔的爱_确定1
+  ON  日常_使魔的爱_确定2
+  ON  日常_使魔的爱_确定3
+  ON  日常_使魔的爱_结算1
+  ON  日常_使魔的爱_结算2
+  ON  日常_使魔的爱_结算3
+  off 日常_吼姆_关窗_确定
+  off 日常_商店_确定
+  off 日常_存在感_关窗_确定
+  off 日常_开战
+  off 日常_每周任务_关窗_确定
+  ON  日常_活动BONUS_助战就绪
+  off 日常_活动BONUS_双倍券
+  ON  日常_活动BONUS_开战
+  ON  日常_活动BONUS_开战_重试
+  off 日常_活动BONUS_打完_挂机
+  off 日常_活动BONUS_打完_挂机_水晶
+  off 日常_活动BONUS_打完_水晶
+  ON  日常_活动BONUS_打完_自动
+  off 日常_活动BONUS_打完_自动_水晶
+  ON  日常_活动BONUS_点好友
+  ON  日常_活动BONUS_点好友_按坐标
+  ON  日常_活动BONUS_选好友
+  ON  日常_虚轴之庭_快捷战斗1
+  ON  日常_虚轴之庭_快捷战斗2
+  ON  日常_虚轴之庭_快捷战斗3
+  ON  日常_虚轴之庭_确定1
+  ON  日常_虚轴之庭_确定2
+  ON  日常_虚轴之庭_确定3
+  ON  日常_虚轴之庭_结算1
+  ON  日常_虚轴之庭_结算2
+  ON  日常_虚轴之庭_结算3
+  off 日常_邮件_体力_关窗_确定
+  off 日常_邮件_领取_关窗_确定
+  ON  通用_确定

@@ -1100,3 +1100,42 @@ agent 日志（`debug/agent.log`）：
   （最后那个 4 分多钟像是真的刷了多轮 BONUS），而且**当天没有 `bonus_fail_*.png`**（结算判定没再出问题）。
 - 体力从昨天的 183 掉到 **42**，说明 BONUS 确实在打。
 - `gui/debug/` 里今天**没有** `bonus_fail_*`，只有 `bonus_entry_fail_*`（找入口失败）和 `escape_relaunched_*`（兜底重启）。
+
+---
+
+## 十三、2026-09-17 的项目大扫除
+
+用户说「把项目里乱七八糟不用的东西清理了」。查下来有两层垃圾：
+
+73. **根目录堆了 109 个调试临时文件，而且全都被提交进仓库了** ——
+    `ACT.txt` / `H1.txt` / `_plan.txt` 这类 `*.txt`、`_*.py`，外加一个 115KB 的 `GOOD.json`，
+    全是上一个会话留下的痕迹。**关键是它们不是「被忽略」，是真进了仓库**
+    （`git ls-files` 列得出来，也进了 Release 的 `-source.zip`）。
+    处理：`git rm` 干净 + `.gitignore` 加守卫：
+    ```
+    /*.txt
+    /_*.py
+    /GOOD.json
+    ```
+    以后根目录再堆这种东西，git 会直接无视。
+
+74. **本地垃圾清了约 2.4 GB**：
+
+    | 目录 | 之前 | 之后 | 说明 |
+    | --- | --- | --- | --- |
+    | `debug/` | **1.94 GB** | 1.0 MB | 连拍帧、现场图、十几份 `t*.log` 全删；**只留 `debug/ref/`**（那套裁模板用的参考图） |
+    | `gui/` | 428 MB | 217 MB | `gui/debug/*.png`、`gui/debug/maafw.log`（十几 MB）、`gui/logs/*.log` 删掉（前提是 GUI 当时关着） |
+    | `dist/` | 0.7 MB | 0 | 打包产物，随时能重新打 |
+
+    ⚠️ **`.downloads/`（160MB）是故意留的**：MaaFramework / MFAAvalonia 的下载缓存，
+    这台机器到 GitHub 时通时断，重装时不用再下一次。
+
+75. **新增 `tools/run_node.py`（单节点隔离测试）** ——
+    `tools/run_task.py --node` **不带 override**，而项目里很多节点在文件里是 `enabled: false`
+    （靠任务选项才打开），单独跑就是「没启用」，什么都不会发生（我就被这个坑过：
+    想单测「选好友」那一下，结果跑了个寂寞）。这个脚本会自己加 `{enabled: true}` 和额外的 override：
+    ```sh
+    python tools/run_node.py 日常_活动BONUS_选好友
+    python tools/run_node.py 日常_活动BONUS_选好友 '{"target":[682,651,0,0]}'
+    ```
+    结果同时落一份到 `debug/run_node.log`（控制台经常把中文吃掉）。

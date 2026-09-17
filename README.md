@@ -104,6 +104,16 @@ python tools/run_task.py 领取邮件 --case 邮件操作=领取附件   # 复�
 
 每个节点命中情况会打到屏幕，同时落一份 UTF-8 到 `debug/run_nodes.log`。
 
+想单独测**一个节点**（比如"这一步到底点动没有"）：
+
+```sh
+python tools/run_node.py 日常_活动BONUS_选好友
+python tools/run_node.py 日常_活动BONUS_选好友 '{"target":[682,651,0,0]}'
+```
+
+（`run_task.py --node` 不带 override，而很多节点在文件里是 `enabled: false`，
+单独跑等于"没启用"；`run_node.py` 会自己把 `enabled` 打开。）
+
 ---
 
 ## 怎么启动

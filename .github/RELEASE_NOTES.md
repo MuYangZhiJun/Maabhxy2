@@ -1,3 +1,14 @@
+## v0.1.10 清了一波仓库
+
+- **根目录清掉 109 个调试临时文件**：`ACT.txt` / `H1.txt` / `_plan.txt` 这类 `*.txt`、`_*.py`，
+  外加一个 115KB 的 `GOOD.json` —— 全是开发过程中留下的痕迹，而且**之前是真被提交进仓库的**
+  （`git ls-files` 列得出来，还进了 `-source.zip`）。现在 `git rm` 干净了，
+  并在 `.gitignore` 加了守卫（`/*.txt`、`/_*.py`、`/GOOD.json`），以后根目录不会再堆。
+- **本地垃圾清了约 2.4 GB**：`debug/` 1.94 GB → **1 MB**（只留 `debug/ref/` 那套参考图）、
+  `gui/` 428 MB → 217 MB（`gui/debug` 的现场图和十几 MB 的 `maafw.log`、`gui/logs` 都删了）。
+- **新增 `tools/run_node.py`**：单独测一个 pipeline 节点（会自己把 `enabled` 打开并支持 override）——
+  `run_task.py --node` 不带 override，而项目里很多节点默认是关着的，单独跑等于没跑。
+
 ## v0.1.9 修了什么
 
 按用户给的截图，把两个「判据」换成真正的 UI 元素（原来认的都是**每天会变的图**）：

@@ -1,3 +1,9 @@
+# 更新日志
+
+每个版本一节，**只写本次改了什么**。发布时 `tools/release_notes.py <tag>`
+会把对应小节 + `.github/release_footer.md` 拼成 Release 正文 ——
+所以**别再往这里堆"上次也修过什么"**，历史按版本往下排就行。
+
 ## v0.1.11 修了什么
 
 按用户的两条指正改的（都对）：
@@ -149,31 +155,3 @@
     处理完弹窗后**收回 `日常_开始`**（公共日常入口，没启用的模块会被自动跳过），
     这样"关完弹窗接着干正事"。
   - 冷启动实测：`启动游戏 → 等主界面 → 标题页 → 等主界面 → 主界面_就绪` ✅
-
-## 怎么用
-
-**方式一（推荐）**：下载 `bh2-maa-<版本>.zip`，解压得到 `interface.json` + `resource/` + `agent/`，
-放进 [MFAAvalonia](https://github.com/MaaXYZ/MFAAvalonia) 当资源用。
-
-**方式二（能自动更新）**：在 MFAAvalonia 里把本仓库加为资源源，之后点「更新资源」，
-它会读 `interface.json` 里的 `github` 字段比对版本、自动更新。
-
-**方式三（开发）**：下载 `bh2-maa-<版本>-source.zip`，里面有完整源码和 `tools/`，能自己构建 GUI：
-
-```sh
-python -m pip install maafw==5.13.0
-python tools/install.py
-python tools/get_gui.py
-gui/MFAAvalonia.exe
-```
-
-## 注意
-
-- ⚠️ Python 的 `maafw` 必须和 GUI 自带的 MaaFramework **同版本**（当前 `5.13.0`），
-  不一致会一直卡在「正在启动 Agent」。
-- 游戏内分辨率要 **1280×720 横屏**，所有识别区域都按这个标定。
-- 「重复刷关」和「关卡战斗 · 活动 BONUS」是同一套逻辑，只差「刷取次数」和「碎水晶」两个选项。
-- 完整说明（怎么启动、怎么自启、常见问题）看仓库的 [README](../README.md)。
-
-> 本项目 **100% 由 AI 代工完成**，没有经过长期实战检验，建议先小号或低风险地试。
-> 自动化操作违反游戏用户协议，使用风险自负。

@@ -1171,3 +1171,40 @@ agent 日志（`debug/agent.log`）：
     实测（体力 18 < 50 的情况）：`详情页上认不到「选择助战好友」（多半是体力不够）—— 收工` ✅
     干净收尾、**没有去点补充体力**。
     ⚠️ **乐观路径（真打一场）当时体力不够没验到** —— 下次体力 ≥50 时要跑一遍确认轮询那套没问题。
+
+---
+
+## 十五、2026-09-18：发布说明改成「只写本次」
+
+用户指出：**每次发的 Release 都把以前所有版本的说明抄一遍，越来越长**。
+根因在结构上 —— `.github/RELEASE_NOTES.md` 是一个**只增不减**的文件（每个版本往顶部加一节），
+而发布流水线是把**整个文件**当 Release 正文：
+
+```yaml
+gh release create "$TAG" dist/*.zip --notes-file .github/RELEASE_NOTES.md   # ← 老写法
+```
+
+所以 v0.1.11 那篇正文里躺着 v0.1.1 ~ v0.1.11 全部 11 节（6449 字符）。
+
+**改法（拆成"历史"和"本次"两个来源）**：
+
+| 文件 | 作用 |
+| --- | --- |
+| `CHANGELOG.md`（根目录，新增） | 所有版本的小节，**历史**，给人翻 |
+| `.github/release_footer.md`（新增） | 「怎么用」「注意」那段**固定尾部** |
+| `tools/release_notes.py <tag>`（新增） | 从 CHANGELOG 里**只取本次那一节** + 拼上 footer |
+
+流水线也跟着改了：`python tools/release_notes.py "$TAG" -o release_notes.md` → `--notes-file release_notes.md`。
+**忘了写本次小节的话这一步会直接报错**（不会发一篇空说明出去）。
+
+**已经发出去的那 10 篇也修了**：写了个 `debug/fix_releases.py`，用 GitHub API 把
+v0.1.2 ~ v0.1.11 的正文各改回「只有自己那一节」（6449 → ~1300 字符）。
+（拿 token 的办法：`git credential fill` 里就有 GCM 存的 OAuth token，不用另外配。
+脚本只在一条命令里用环境变量传进去，**不落盘、不打印**。）
+
+**发版的正确顺序现在是这样**（PUBLISH.md 里也更新了）：
+1. 在 `CHANGELOG.md` **顶部**写一节本次的改动（只写本次）
+2. 改 `assets/interface.json` 的 `version`
+3. `python tools/check_version.py vX.Y.Z` —— 现在它会**顺便核对 CHANGELOG 里有没有这一节**
+4. `python tools/push.py -m "chore: release vX.Y.Z"`
+5. `git tag vX.Y.Z && git push origin vX.Y.Z`

@@ -41,10 +41,17 @@ jobs:
       - name: 核对 tag 和 interface.json 的 version
         run: python tools/check_version.py "$TAG"
 
+      # ⚠️ 以前这里直接把 .github/RELEASE_NOTES.md 整个当正文，而那个文件是**只增不减**的
+      # → 越发布越长，每篇 Release 都带着之前所有版本（用户 2026-09-18 指出）。
+      # 现在正文由脚本按 tag 从 CHANGELOG.md 里**只取本次那一节**，再拼上固定尾部；
+      # 万一忘了写本次的小节，这一步会直接报错（不会发一篇空说明出去）。
+      - name: 生成本次发布说明（只含本次改动）
+        run: python tools/release_notes.py "$TAG" -o release_notes.md
+
       - name: 建 Release 并上传
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$TAG" dist/*.zip \
             --title "崩坏学园2 小助手 $TAG" \
-            --notes-file .github/RELEASE_NOTES.md
+            --notes-file release_notes.md

@@ -214,6 +214,7 @@ agent/                         Python agent：自动战斗、BONUS 刷关循环
 tools/                         开发工具（跑任务、校验、裁图、打分、体检、打包）
                                其中 tools/read_screen.py 能把屏幕上的字读出来（OCR 排查用）
 HANDOFF.md                     开发笔记：当前状态、待办、踩过的坑（改之前先看这个）
+CHANGELOG.md                   更新日志（每个版本一节；发 Release 时只取本次那一节）
 PUBLISH.md                     发布与本仓库作为更新源的说明
 ```
 

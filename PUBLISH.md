@@ -43,29 +43,35 @@ git push -u origin main
 > 建好 Release 并挂上两个 zip（见 `.github/workflows/release.yml`）。
 > 手动打包只是为了本地先看一眼。
 
-1. **把 `assets/interface.json` 的 `version` 往上加**（比如 `0.1.0` → `0.1.1`）。
-   ⚠️ 这一步不能省：MFAAvalonia 的「更新资源」是**读这个字段**判断有没有新版本的，
-   不改的话别人点更新会以为"已经是最新"。流水线会核对 tag 和 version 是否一致，不一致会报警告。
-2. （可选）本地先看一眼包干不干净：
+1. **在 `CHANGELOG.md` 顶部写一节本次的改动**（`## v0.2.0 修了什么`）。
+   ⚠️ **只写本次**，别把以前的抄一遍 —— Release 正文是脚本按 tag 从这个文件里**只取那一节**的
+   （老的做法是把所有版本堆在一个文件里当正文，结果每篇 Release 越来越长，用户 2026-09-18 指出来了）。
+   忘了写这一节的话，发布流水线会**直接报错**（不会发一篇空说明出去）。
+2. **把 `assets/interface.json` 的 `version` 往上加**（比如 `0.1.0` → `0.1.1`）。
+   ⚠️ 这一步也不能省：MFAAvalonia 的「更新资源」是**读这个字段**判断有没有新版本的，
+   不改的话别人点更新会以为"已经是最新"。流水线会核对 tag 和 version 是否一致。
+3. （可选）本地先看一眼包干不干净、说明对不对：
    ```sh
    python tools/package.py --with-tools   # 出 dist/ 两个 zip
    python tools/check_package.py          # 检查没混进隐私/调试文件、必需内容齐全
    python tools/check_version.py v0.1.1   # 核对 tag 和 version
+   python tools/release_notes.py v0.1.1   # 预览这次的 Release 正文（应该只有本次）
    ```
-3. **提交 + 推送**（网络抽风的话它自己重试）：
+4. **提交 + 推送**（网络抽风的话它自己重试）：
    ```sh
    python tools/push.py -m "chore: release v0.1.1"
    ```
    或者双击「推送更新.bat」。
-4. **打 tag 并推上去**（这一步会触发发布流水线）：
+5. **打 tag 并推上去**（这一步会触发发布流水线）：
    ```sh
    git tag v0.1.1
    git push origin v0.1.1
    ```
-5. 等一两分钟，Release 就自动出现在
+6. 等一两分钟，Release 就自动出现在
    `https://github.com/<你的用户名>/<仓库>/releases` —— 两个 zip 已经挂好了。
 
-**Release 说明**（正文）用的是 `.github/RELEASE_NOTES.md`，想改说明就改那个文件。
+**Release 正文** = `CHANGELOG.md` 里对应那个版本的小节 + `.github/release_footer.md`
+（"怎么用 / 注意"那段固定说明）。想改说明，就改这两个文件。
 
 > ⚠️ Python 的 `maafw` 版本、以及 `.github/workflows/` 里那两个流水线：
 > `check.yml` 在每次改动 assets/agent/tools 时跑项目自己的自检（schema、引用、缺图、

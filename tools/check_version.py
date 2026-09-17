@@ -33,11 +33,26 @@ def main():
         return 1
     if tag == "v" + version or tag == version:
         print("一致 ✅")
-        return 0
-    print("[!!] 不一致 ✗ —— 打 tag 之前先把 interface.json 的 version 改成 %s"
-          % (tag.lstrip("v")))
-    print("     （不改的话，用「更新资源」的人会以为已经是最新，收不到这次更新）")
-    return 1
+    else:
+        print("[!!] 不一致 ✗ —— 打 tag 之前先把 interface.json 的 version 改成 %s"
+              % (tag.lstrip("v")))
+        print("     （不改的话，用「更新资源」的人会以为已经是最新，收不到这次更新）")
+        return 1
+
+    # 顺手核对 CHANGELOG 里有没有这一版的小节 —— 发布流水线要拿它当 Release 正文，
+    # 少了会直接报错（宁可在这里先发现，也别等流水线跑到一半才失败）。
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import release_notes
+        if tag.lstrip("v") in release_notes.sections():
+            print("CHANGELOG 里有 v%s 这一节 ✅" % tag.lstrip("v"))
+        else:
+            print("[!!] CHANGELOG.md 里**没有 v%s 这一节** —— 发版前记得在文件顶部"
+                  "写一节本次的改动（只写本次）" % tag.lstrip("v"))
+            return 1
+    except Exception as exc:  # noqa: BLE001
+        print("（CHANGELOG 检查跳过: %s）" % exc)
+    return 0
 
 
 if __name__ == "__main__":

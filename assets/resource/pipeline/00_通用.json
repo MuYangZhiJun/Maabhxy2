@@ -18,12 +18,15 @@
     },
     "通用_关闭弹窗": {
         "recognition": "TemplateMatch",
-        "template": "通用/关闭X.png",
+        "template": [
+            "通用/关闭X.png",
+            "通用/回归赠礼_关闭.png"
+        ],
         "roi": [
-            1080,
-            20,
-            200,
-            140
+            930,
+            60,
+            350,
+            230
         ],
         "threshold": 0.85,
         "action": "Click",

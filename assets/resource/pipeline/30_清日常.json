@@ -2800,12 +2800,15 @@
     "日常_关弹窗": {
         "enabled": true,
         "recognition": "TemplateMatch",
-        "template": "通用/关闭X.png",
+        "template": [
+            "通用/关闭X.png",
+            "通用/回归赠礼_关闭.png"
+        ],
         "roi": [
-            1080,
-            20,
-            200,
-            140
+            930,
+            60,
+            350,
+            230
         ],
         "threshold": 0.85,
         "action": "Click",
@@ -2821,26 +2824,22 @@
     "日常_回归赠礼_关X": {
         "enabled": true,
         "recognition": "TemplateMatch",
-        "template": "日常/回归赠礼.png",
+        "template": "通用/回归赠礼_关闭.png",
         "roi": [
-            400,
-            100,
-            700,
-            160
+            930,
+            60,
+            350,
+            230
         ],
         "threshold": 0.85,
         "action": "Click",
-        "target": [
-            990,
-            155,
-            85,
-            85
-        ],
-        "max_hit": 2,
+        "target": true,
+        "max_hit": 3,
         "post_delay": 2000,
         "next": [
             "日常_关弹窗",
             "日常_每日签到_领取",
+            "日常_回归赠礼_关X",
             "日常_卡死_回归赠礼",
             "日常_开始"
         ]
